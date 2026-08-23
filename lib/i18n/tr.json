@@ -44,7 +44,8 @@
     "outlier": "{item} konusunda ayrıştın — {label} %{percent}"
   },
   "reveal": {
-    "notEnough": "Henüz yeterli oy yok",
+    "firstVote": "İlk oyu sen verdin",
+    "tooFewForPercent": "{total} oy — yüzde için henüz erken",
     "crowd": "Kalabalık {label} dedi",
     "yourPick": "senin seçimin",
     "next": "Sıradaki tur",

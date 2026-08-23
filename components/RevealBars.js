@@ -26,9 +26,42 @@ export default function RevealBars({ stat, ownLabel }) {
     return () => cancelAnimationFrame(frame);
   }, []);
 
+  // Eşiğin altında da bir şey göster. Eskiden burası tek satır "Henüz
+  // yeterli oy yok" idi ve pratikte HER kart öyle görünüyordu — oyunun tek
+  // fikri hiç çalışmıyordu. SPEC'in yasakladığı şey uydurma yüzde; ham sayı
+  // yuvarlama içermiyor, "3 kişi Al dedi" olgu.
   if (!stat?.enough) {
+    const counts = stat?.counts;
+    const toplam = stat?.total ?? 0;
+
+    // Tek oy varsa o oy kullanıcının kendisininki; sayı dökmenin anlamı yok.
+    if (!counts || toplam <= 1) {
+      return <p className="py-4 text-sm text-muted">{t("reveal.firstVote")}</p>;
+    }
+
     return (
-      <p className="py-4 text-sm text-muted">{t("reveal.notEnough")}</p>
+      <div className="py-3">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+          {LABELS.map((label) => (
+            <span key={label} className="flex items-baseline gap-1.5 text-sm">
+              <span
+                className={`font-extrabold ${
+                  ownLabel === label ? CHIP[label].mine + " px-1.5 py-0.5" : CHIP[label].other
+                }`}
+              >
+                {t(`labels.${label}`)}
+                {ownLabel === label && (
+                  <span className="sr-only"> — {t("reveal.yourPick")}</span>
+                )}
+              </span>
+              <span className="font-semibold tabular-nums text-ink">{counts[label]}</span>
+            </span>
+          ))}
+        </div>
+        <p className="mt-2 text-sm text-muted">
+          {t("reveal.tooFewForPercent", { total: toplam })}
+        </p>
+      </div>
     );
   }
 

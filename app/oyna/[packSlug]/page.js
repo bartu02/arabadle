@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import GameBoard from "@/components/GameBoard";
 import { buildRounds } from "@/lib/game";
 import { t } from "@/lib/i18n";
+import { MIN_VOTES_FOR_PERCENT } from "@/lib/votes";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -62,9 +63,20 @@ async function loadGame(packSlug, roundCount) {
     otherRounds = (others.data ?? []).map(toRound);
   }
 
+  // Üçlü başına oy sayısı: turlar eşiğe yakın olanlara doğru ağırlıklanıyor
+  // (lib/game.js -> trioWeight). Sayaç okunamazsa oyun düz rastgeleye
+  // düşüyor — eski davranış, yani oynanabilirlik buna bağımlı değil.
+  let counts = null;
+  const sayac = await supabase.rpc("trio_vote_counts");
+  if (sayac.error) {
+    console.error("Üçlü oy sayıları okunamadı, tur seçimi düz rastgele:", sayac.error.message);
+  } else {
+    counts = new Map((sayac.data ?? []).map((satir) => [satir.trio_id, satir.oturum]));
+  }
+
   return {
     pack: { slug: pack.data.slug, title: pack.data.title },
-    rounds: buildRounds(ownRounds, otherRounds, roundCount),
+    rounds: buildRounds(ownRounds, otherRounds, roundCount, counts, MIN_VOTES_FOR_PERCENT),
   };
 }
 

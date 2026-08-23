@@ -149,6 +149,48 @@ vermeden sonraki adıma geçme. **Bir adım bitince aşağıdaki tabloyu güncel
 - `/atif` sayfası CC BY / BY-SA'nın istediği atfı veriyor: her fotoğrafın
   sahibi, lisansı (linkli) ve kaynağı. Ana sayfanın altından linkli.
 
+### Oyunun ödülü (eşik ve tur seçimi)
+
+Uzun süre fark edilmeyen şey: **oyunun tek fikri hiç çalışmıyordu.**
+2026-08-24'te ölçüldü — 70 üçlünün **sıfırı** eşiği geçmişti, 53'ü hiç oy
+almamıştı. Kim oynarsa oynasın her turda üç kartta da "Henüz yeterli oy
+yok", sonunda "Uyum için yeterli oy yok" görüyordu. Kalabalıkla kendini
+karşılaştırma, yani ürünün tamamı, bir kez bile açılmamıştı.
+
+Sebep tek bir hata değil, üçünün birleşimiydi. Üçü de düzeltildi:
+
+**1. Tur seçimi artık ağırlıklı** (`lib/game.js` → `trioWeight`,
+`weightedSample`). Sezgiye ters olan kısım şu: "en az oyu olana öncelik
+ver" işe yaramıyor — oyları 70 üçlüye eşit dağıtır ve hiçbiri eşiği
+geçmeden hepsi birlikte yükselir. Doğrusu tersi: **eşiği geçmeye en yakın**
+olana ağırlık vermek. Üçlüler tek tek açılır. Eşiği geçen taban ağırlığa
+döner, yani kendi kendini dengeliyor.
+
+`BIAS` ölçülerek seçildi (`scratchpad/bias-tune.mjs`):
+
+| eğri | ilk açılan oyun | 20. oyunda açık | ardışık tekrar |
+|------|-----------------|-----------------|----------------|
+| düz (eski) | 15.6 | 5.0 | %23 |
+| BIAS=8 | 9.8 | 18.7 | %33 |
+| **BIAS=25** | **8.7** | **26.7** | %45 |
+
+Teorik en iyi 8 (bir üçlünün 8 oya ulaşması için 8 oyun gerekiyor).
+Bedeli ardışık tekrarın artması; geçici, çünkü açılan üçlüler ağırlığını
+kaybediyor. `scratchpad/ramp-sim.mjs` bu rampayı simüle ediyor.
+
+**2. Eşik 20 → 8** (`lib/votes.js` → `MIN_VOTES_FOR_PERCENT`). Tek yer.
+Trafik geldikçe yükseltilebilir.
+
+**3. Eşiğin altında artık ölü kart yok.** Ham sayı gösteriliyor
+("Al 5 · Sat 1 · Yak 1 · 7 oy — yüzde için henüz erken"), tek oy varsa
+"İlk oyu sen verdin".
+
+**`0003_trio_vote_counts.sql` elle çalıştırılmalı** — Supabase SQL Editor.
+Ağırlıklandırma üçlü başına oy sayısına bağlı ve PostgREST group by
+yapmıyor. Çalıştırılmazsa oyun kilitlenmez: loga
+`Üçlü oy sayıları okunamadı, tur seçimi düz rastgele` düşer ve eski
+davranışa döner. Eşik ve ham sayı değişiklikleri migration'sız da çalışır.
+
 ### Tasarım
 
 SPEC 7 "şablon görünümlü, AI ile yapılmış hissi veren tasarımdan kaçın"
@@ -186,6 +228,14 @@ kırılmasın diye: `data-agreement`, `data-pack-title`, `data-pack-count`,
 Utility sınıfına (`text-7xl` gibi) göre seçici yazma — bir kez yazıldı ve
 düzen değişince test sessizce yanlış elemanı ölçmeye başladı.
 
+**Eşiği testlere gömme.** `votes-test.mjs` ve `result-test.mjs` 20'yi
+sabit yazmıştı; eşik 8'e inince "19 oy eşiğin altında" testi birden
+eşiğin *üstünü* ölçmeye başladı. İkisi de artık
+`MIN_VOTES_FOR_PERCENT`'ten türetiyor. Aynı şekilde `ui-test.mjs` ve
+`firstplayer.mjs` "Henüz yeterli oy yok" metnini arıyordu — metin
+değişince kırıldılar. Artık SPEC'in asıl kuralına bakıyorlar
+(kartta yüzde işareti yok) ve beklenen metni `tr.json`'dan okuyorlar.
+
 **Testlere içerik sayısı gömme.** "5 paket listeleniyor", "Tur 1 / 10" gibi
 sabitler içerik büyüyünce kırıldı. Hepsi veritabanından okunan gerçek sayıyla
 karşılaştırılacak şekilde yeniden yazıldı.
@@ -200,6 +250,15 @@ bölüp OG rotasını çökertiyordu; tek şablon dizesi olarak veriliyor.
 
 ### SPEC'ten sapmalar (bilinçli)
 
+- SPEC 6.3 "20'den az oy varsa yüzde gösterme" diyor ve eşik **8**'e
+  indirildi. Gerekçe yukarıda: 20'de oyun hiç konuşmuyordu. 8'de yüzdeler
+  %12,5'lik adımlarla geliyor ve "neredeyse oy birliği" (%90+) hâlâ 8/8
+  istiyor, yani nadir kalıyor.
+- SPEC 6.3 eşiğin altında "henüz yeterli oy yok" demeyi istiyor; onun
+  yerine **ham sayı** gösteriliyor. SPEC'in asıl derdi uydurma yüzdeydi
+  ("%100 Al" derken arkada iki oy olması); "3 kişi Al dedi" yuvarlama
+  içermiyor, olgu. Pratikte her kart o ölü satırı gösterdiği için kural
+  olduğu gibi uygulanamazdı.
 - Öne çıkan istatistikte SPEC'in üç kuralına dördüncü bir dal eklendi
   (`outlier`): kullanıcı üçün bir kısmında ayrıldığında ilk üçü tutmuyordu ama
   SPEC her turda bir satır istiyor. Gerekçe `lib/votes.js` → `pickHighlight`
@@ -394,7 +453,7 @@ tabloyu `votes-live.json`'a yazar, `... restore` geri koyar. Yedek dosyası
 tek koşuya ait olduğu için `votes-backup.jsonl`'ı elle ayıklamaktan kolay.
 Sıra: `save` → testler → `restore` → `show` ile satır sayısını doğrula.
 
-24 paket:
+25 paket:
 saf mantık, yüzde, öne çıkan kurallar, sonuç hesabı, `/api/oy`, ve gerçek
 Edge'de oyun akışı / öne çıkan satır / sonuç+OG / ilk oyuncu / düzen-klavye-a11y
 / kontrast / tasarım (`photos/design-check.mjs`: fontun gerçekten yüklendiği,
@@ -423,6 +482,12 @@ Güvenlik tarafında dört paket daha:
   tarafı ve canlı API üzerinden davranışı.
 - `security/ip-probe.mjs` — hangi IP başlığının kovayı değiştirdiğini
   ölçer. Güven kuralı değişirse önce burası koşturulmalı.
+- `uitest/payoff.mjs` — ödülün üç aşamasını gerçek tarayıcıda dener:
+  hiç oy yokken "ilk oyu sen verdin", eşiğin bir altında ham sayı ve
+  **yüzde yok**, eşikte yüzde çubukları + öne çıkan satır. Bütün üçlüleri
+  aynı sayıda oyla dolduruyor çünkü hangisinin geleceği rastgele.
+- `ramp-sim.mjs` / `bias-tune.mjs` — ağırlık eğrisini ölçer. `BIAS`
+  değiştirilecekse önce bunlar koşturulmalı.
 - `security/deploy-check.mjs <url>` — **deploy'dan sonra çalıştır.**
   Canlı siteyi dışarıdan denetler, veritabanı anahtarı kullanmaz: bütün
   güvenlik başlıkları, nonce'ın tazeliği, robots, `/api/oy`'un kapıdaki
