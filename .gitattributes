@@ -1,0 +1,13 @@
+# Depoda her sey LF. Windows'ta calisiliyor ama Vercel Linux'ta build
+# ediyor; satir sonu deponun icinde tek turlu olmazsa her checkout'ta
+# sahte degisiklik cikar.
+* text=auto eol=lf
+
+# Ikili dosyalar: Git bunlara dokunmasin.
+*.jpg  binary
+*.jpeg binary
+*.png  binary
+*.webp binary
+*.avif binary
+*.ico  binary
+*.pdf  binary

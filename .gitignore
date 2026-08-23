@@ -1,0 +1,26 @@
+node_modules/
+.next/
+out/
+build/
+
+# Sirlar. Kural genis tutuldu: hangi .env dosyasi olursa olsun disarida
+# kalir, yalnizca ornek sablonlar girer. Dar bir kural (.env.local gibi)
+# yarin eklenecek .env.production'i kacirir.
+.env
+.env.*
+!.env*.example
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.log
+
+.DS_Store
+Thumbs.db
+*.pem
+.vercel
+next-env.d.ts
+
+# Claude Code'un yerel ayarlari, makineye ozel
+.claude/settings.local.json

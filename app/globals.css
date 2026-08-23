@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+@theme {
+  /* Koyu zemin — fotoğraf kahraman, arayüz geri çekilir.
+     Düz siyah yerine hafif soğuk, katmanlı bir gri ailesi: yüzeyler
+     birbirinden ayrışıyor, fotoğraflar zeminden kopmuyor. */
+  --color-bg: #08090c;
+  --color-surface: #12141a;
+  --color-raised: #1a1d25;
+  --color-line: #262a34;
+  --color-ink: #f5f6f8;
+  --color-muted: #9096a3;
+
+  /* Al / Sat / Yak. Bu üç renk tüm üründe sabit kalır. */
+  --color-buy: #3ddc84;
+  --color-sell: #f5b544;
+  --color-burn: #ff4d3d;
+
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    /* İki katman, ikisi de içeriğin ALTINDA: kartlar ve fotoğraflar opak,
+       dolayısıyla doku yalnızca boşlukta görünür, fotoğrafın üstünden
+       geçmez. Üstte hafif bir aydınlanma, her yerde ince bir grain —
+       sayfa düz siyah bir dikdörtgen olmaktan çıkıyor. */
+    background-image:
+      radial-gradient(
+        130% 80% at 50% -25%,
+        rgba(132, 146, 178, 0.13),
+        transparent 62%
+      ),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    background-attachment: fixed, fixed;
+    background-repeat: no-repeat, repeat;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Sayılar her yerde aynı genişlikte: tur sayacı ve yüzdeler
+     değişirken satır oynamıyor. */
+  h1, h2, .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  ::selection {
+    background: var(--color-ink);
+    color: var(--color-bg);
+  }
+
+  /* Klavye odağı her zaman görünür. */
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

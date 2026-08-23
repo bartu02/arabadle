@@ -1,0 +1,702 @@
+[
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 1,
+    "pattern": "sefalet-uclusu",
+    "item_slugs": [
+      "fiat-egea",
+      "renault-clio-5",
+      "peugeot-208-2019"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 2,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "togg-t10x",
+      "toyota-corolla-e210",
+      "dacia-duster-2018"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 3,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "hyundai-i20-bc3",
+      "vw-polo-6",
+      "opel-corsa-f"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 4,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "peugeot-301",
+      "renault-megane-sedan",
+      "skoda-octavia-4"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 5,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "toyota-chr",
+      "nissan-qashqai-j12",
+      "hyundai-bayon"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 6,
+    "pattern": "sefalet-uclusu",
+    "item_slugs": [
+      "dacia-sandero-3",
+      "fiat-egea-cross",
+      "ford-focus-mk4"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 7,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "hyundai-tucson-nx4",
+      "kia-sportage-nq5",
+      "toyota-rav4-xa50"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 8,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "bmw-x3-g01",
+      "mercedes-glc-x254",
+      "audi-q5-fy"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 9,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "nissan-juke-f16",
+      "citroen-c3-aircross",
+      "opel-mokka-b"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 10,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "vw-t-roc",
+      "skoda-karoq",
+      "seat-ateca"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 11,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "peugeot-3008-2",
+      "ford-kuga-3",
+      "renault-captur-2"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 12,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "volvo-xc40",
+      "jeep-compass-mp",
+      "mazda-cx5-kf"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 13,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "opel-astra-j",
+      "ford-focus-mk3",
+      "vw-golf-mk6"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 14,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "toyota-auris-e150",
+      "honda-civic-fb",
+      "mazda-3-bl"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 15,
+    "pattern": "sefalet-uclusu",
+    "item_slugs": [
+      "renault-fluence",
+      "fiat-linea",
+      "toyota-corolla-e140"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 16,
+    "pattern": "sefalet-uclusu",
+    "item_slugs": [
+      "hyundai-i30-fd",
+      "kia-ceed-ed",
+      "chevrolet-aveo-t250"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 17,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "renault-megane-3",
+      "peugeot-308-t7",
+      "seat-ibiza-6j"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 18,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "skoda-octavia-3",
+      "opel-insignia-a",
+      "nissan-qashqai-j10"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 19,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "tesla-model-3",
+      "hyundai-ioniq-5",
+      "kia-ev6"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 20,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "tesla-model-y",
+      "vw-id4",
+      "byd-atto-3"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 21,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "togg-t10f",
+      "byd-seal",
+      "xiaomi-su7"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 22,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "porsche-taycan",
+      "polestar-2",
+      "bmw-i4"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 23,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "skoda-enyaq",
+      "volvo-ex30",
+      "ford-mustang-mach-e"
+    ]
+  },
+  {
+    "pack_slug": "turkiye-yollari",
+    "sort_order": 24,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "mg4",
+      "renault-megane-etech",
+      "cupra-born"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 1,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "ferrari-296-gtb",
+      "lamborghini-huracan",
+      "mclaren-720s"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 2,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "porsche-911-992",
+      "alpine-a110",
+      "toyota-gr-supra"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 3,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "bmw-m3-g80",
+      "audi-rs3-8y",
+      "mercedes-amg-a45-s"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 4,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "nissan-gtr-r35",
+      "corvette-c8",
+      "audi-r8-4s"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 5,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "porsche-cayman-gt4",
+      "lotus-emira",
+      "aston-martin-vantage"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 6,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "bmw-m2-g87",
+      "mercedes-amg-gt",
+      "ford-mustang-s550"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 7,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "toyota-gr86",
+      "subaru-brz-zd8",
+      "mazda-mx5-nd"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 8,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "nissan-z-rz34",
+      "nissan-370z",
+      "toyota-gt86"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 9,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "subaru-wrx-vb",
+      "subaru-impreza-sti-gr",
+      "mitsubishi-evo-x"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 10,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "honda-nsx-nc1",
+      "honda-civic-type-r-fk2",
+      "honda-civic-type-r-fd2"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 11,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "lexus-lc500",
+      "lexus-rcf",
+      "lexus-isf"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 12,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "mazda-3-mps",
+      "nissan-juke-nismo",
+      "suzuki-swift-sport-zc32"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 13,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "toyota-gr-yaris",
+      "honda-civic-type-r-fl5",
+      "vw-golf-8-gti"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 14,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "hyundai-i20-n",
+      "renault-megane-rs",
+      "mini-jcw"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 15,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "ford-fiesta-st-mk8",
+      "peugeot-208-gti",
+      "suzuki-swift-sport"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 16,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "hyundai-i30-n",
+      "cupra-leon",
+      "ford-focus-st-mk4"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 17,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "toyota-gr-corolla",
+      "honda-civic-type-r-fk8",
+      "bmw-m135i-f40"
+    ]
+  },
+  {
+    "pack_slug": "performans",
+    "sort_order": 18,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "audi-s3-8y",
+      "renault-clio-rs-4",
+      "abarth-595"
+    ]
+  },
+  {
+    "pack_slug": "prestij-arazi",
+    "sort_order": 1,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "range-rover-l460",
+      "jeep-grand-cherokee-wl",
+      "land-rover-discovery-l462"
+    ]
+  },
+  {
+    "pack_slug": "prestij-arazi",
+    "sort_order": 2,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "jeep-wrangler-jl",
+      "land-rover-defender-l663",
+      "mercedes-g-w463"
+    ]
+  },
+  {
+    "pack_slug": "prestij-arazi",
+    "sort_order": 3,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "toyota-land-cruiser-j300",
+      "nissan-patrol-y62",
+      "lexus-lx-j310"
+    ]
+  },
+  {
+    "pack_slug": "prestij-arazi",
+    "sort_order": 4,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "toyota-hilux-an120",
+      "ford-ranger-raptor",
+      "vw-amarok-2"
+    ]
+  },
+  {
+    "pack_slug": "prestij-arazi",
+    "sort_order": 5,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "isuzu-d-max-rg",
+      "mitsubishi-l200-2019",
+      "ford-bronco-u725"
+    ]
+  },
+  {
+    "pack_slug": "prestij-arazi",
+    "sort_order": 6,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "suzuki-jimny-jb74",
+      "dacia-duster-3",
+      "ineos-grenadier"
+    ]
+  },
+  {
+    "pack_slug": "prestij-arazi",
+    "sort_order": 7,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "bmw-3-g20",
+      "mercedes-c-w206",
+      "audi-a4-b9"
+    ]
+  },
+  {
+    "pack_slug": "prestij-arazi",
+    "sort_order": 8,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "bmw-5-g30",
+      "mercedes-e-w213",
+      "audi-a6-c8"
+    ]
+  },
+  {
+    "pack_slug": "prestij-arazi",
+    "sort_order": 9,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "vw-passat-b8",
+      "skoda-superb-3",
+      "volvo-s60-3"
+    ]
+  },
+  {
+    "pack_slug": "prestij-arazi",
+    "sort_order": 10,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "lexus-is-xe30",
+      "alfa-romeo-giulia",
+      "jaguar-xe"
+    ]
+  },
+  {
+    "pack_slug": "prestij-arazi",
+    "sort_order": 11,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "toyota-camry-xv70",
+      "honda-accord-cv",
+      "mazda-6-gj"
+    ]
+  },
+  {
+    "pack_slug": "prestij-arazi",
+    "sort_order": 12,
+    "pattern": "sefalet-uclusu",
+    "item_slugs": [
+      "genesis-g70",
+      "peugeot-508-2",
+      "opel-insignia-b"
+    ]
+  },
+  {
+    "pack_slug": "eski-arabalar",
+    "sort_order": 1,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "peugeot-205-gti-19",
+      "vw-golf-gti-mk2",
+      "renault-5-gt-turbo"
+    ]
+  },
+  {
+    "pack_slug": "eski-arabalar",
+    "sort_order": 2,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "honda-civic-vti-eg6",
+      "renault-clio-williams",
+      "peugeot-306-gti-6"
+    ]
+  },
+  {
+    "pack_slug": "eski-arabalar",
+    "sort_order": 3,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "porsche-911-964-carrera-2",
+      "ferrari-348-tb",
+      "honda-nsx-na1"
+    ]
+  },
+  {
+    "pack_slug": "eski-arabalar",
+    "sort_order": 4,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "dodge-viper-rt10",
+      "chevrolet-corvette-zr1-c4",
+      "porsche-928-gts"
+    ]
+  },
+  {
+    "pack_slug": "eski-arabalar",
+    "sort_order": 5,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "bmw-m3-e30",
+      "mercedes-190e-25-16",
+      "alfa-romeo-75-twin-spark"
+    ]
+  },
+  {
+    "pack_slug": "eski-arabalar",
+    "sort_order": 6,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "bmw-m5-e34",
+      "mercedes-500e-w124",
+      "audi-s4-c4"
+    ]
+  },
+  {
+    "pack_slug": "eski-arabalar",
+    "sort_order": 7,
+    "pattern": "sefalet-uclusu",
+    "item_slugs": [
+      "opel-astra-g",
+      "fiat-bravo-182",
+      "peugeot-307"
+    ]
+  },
+  {
+    "pack_slug": "eski-arabalar",
+    "sort_order": 8,
+    "pattern": "sefalet-uclusu",
+    "item_slugs": [
+      "hyundai-accent-era",
+      "fiat-albea",
+      "tofas-sahin"
+    ]
+  },
+  {
+    "pack_slug": "eski-arabalar",
+    "sort_order": 9,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "lancia-delta-hf-integrale-evo",
+      "ford-sierra-rs-cosworth",
+      "audi-quattro"
+    ]
+  },
+  {
+    "pack_slug": "eski-arabalar",
+    "sort_order": 10,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "subaru-impreza-22b-sti",
+      "mitsubishi-lancer-evo-vi-tme",
+      "toyota-celica-gt-four-st205"
+    ]
+  },
+  {
+    "pack_slug": "eski-arabalar",
+    "sort_order": 11,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "toyota-supra-a80",
+      "nissan-skyline-r34",
+      "mazda-rx7-fd"
+    ]
+  },
+  {
+    "pack_slug": "eski-arabalar",
+    "sort_order": 12,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "honda-s2000",
+      "nissan-silvia-s15",
+      "honda-integra-dc2"
+    ]
+  },
+  {
+    "pack_slug": "eski-arabalar",
+    "sort_order": 13,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "bmw-m3-e46",
+      "audi-rs4-b5",
+      "alfa-romeo-156-gta"
+    ]
+  },
+  {
+    "pack_slug": "eski-arabalar",
+    "sort_order": 14,
+    "pattern": "acitan-uclu",
+    "item_slugs": [
+      "renault-clio-v6",
+      "ford-focus-rs-mk1",
+      "honda-civic-ep3"
+    ]
+  },
+  {
+    "pack_slug": "eski-arabalar",
+    "sort_order": 15,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "chevrolet-corvette-c5",
+      "chevrolet-camaro-4",
+      "subaru-impreza-sti-gd"
+    ]
+  },
+  {
+    "pack_slug": "eski-arabalar",
+    "sort_order": 16,
+    "pattern": "farkli-ekol",
+    "item_slugs": [
+      "mercedes-s-w140",
+      "bmw-7-e38",
+      "lexus-ls400"
+    ]
+  }
+]

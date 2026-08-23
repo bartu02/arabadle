@@ -1,0 +1,82 @@
+{
+  "app": {
+    "title": "Al, Sat, Yak",
+    "tagline": "Üç araba gelir. Birine Al, birine Sat, birine Yak dersin.",
+    "description": "Üç araba, üç etiket. Sen dağıt, sonra kalabalığın ne dediğini gör."
+  },
+  "labels": {
+    "buy": "Al",
+    "sell": "Sat",
+    "burn": "Yak"
+  },
+  "home": {
+    "trioCount": "{count} üçlü",
+    "mixedNote": "Bu pakette {count} üçlü var, kalan turlar diğer paketlerden gelir.",
+    "empty": "Ortada paket yok.",
+    "error": "Paketler şu an gelmiyor.",
+    "category": "Arabalar",
+    "categoryNote": "Şimdilik tek kategori.",
+    "packs": "Paketler"
+  },
+  "rounds": {
+    "question": "Kaç tur?",
+    "count": "{count} tur",
+    "short": "kısa",
+    "long": "uzun"
+  },
+  "game": {
+    "counter": "Tur {current} / {total}",
+    "assignAll": "Üçünü de dağıt",
+    "confirm": "Onayla",
+    "sending": "Gidiyor",
+    "keyboardHint": "Kartın üstündeyken 1 Al, 2 Sat, 3 Yak",
+    "labelFor": "{label} — {item}",
+    "empty": "Bu pakette oynanacak üçlü yok.",
+    "error": "Oyun şu an açılmıyor.",
+    "finished": "Turlar bitti.",
+    "resultSoon": "Sonuç ekranı henüz yok.",
+    "backHome": "Ana sayfa"
+  },
+  "highlight": {
+    "unanimous": "Neredeyse oy birliği — {item}: %{percent} {label}",
+    "minority": "Bu turda azınlıktasın",
+    "majority": "Çoğunlukla aynı fikirdesin",
+    "outlier": "{item} konusunda ayrıştın — {label} %{percent}"
+  },
+  "reveal": {
+    "notEnough": "Henüz yeterli oy yok",
+    "crowd": "Kalabalık {label} dedi",
+    "yourPick": "senin seçimin",
+    "next": "Sıradaki tur",
+    "last": "Sonucu gör",
+    "error": "Oylar kaydedilemedi."
+  },
+  "result": {
+    "agreement": "kalabalıkla uyum",
+    "agreementUnknown": "Uyum için yeterli oy yok",
+    "roundCount": "{rounds} tur",
+    "garage": "Garaj",
+    "garageEmpty": "Hiçbirine Al demedin.",
+    "scrapyard": "Hurdalık",
+    "scrapyardEmpty": "Hiçbirini yakmadın.",
+    "playAgain": "Tekrar oyna",
+    "otherPack": "Başka paket",
+    "copy": "Linki kopyala",
+    "copied": "Kopyalandı",
+    "error": "Sonuç şu an açılmıyor.",
+    "shareTitle": "Garajım — Al, Sat, Yak",
+    "shareDescription": "{rounds} turda kalabalıkla %{agreement} uyum.",
+    "shareNoAgreement": "{rounds} tur oynadım, kalabalık henüz konuşmadı."
+  },
+  "credits": {
+    "title": "Fotoğraf atıfları",
+    "intro": "Arabaların fotoğrafları Wikimedia Commons'tan geliyor; hepsi serbest lisanslı. Her fotoğrafın sahibi, lisansı ve kaynağı aşağıda.",
+    "car": "Araba",
+    "photographer": "Fotoğrafçı",
+    "license": "Lisans",
+    "source": "Kaynak",
+    "sourceLink": "Commons sayfası",
+    "link": "Fotoğraf atıfları",
+    "back": "Ana sayfa"
+  }
+}

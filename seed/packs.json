@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "turkiye-yollari",
+    "title": "Türkiye'nin yolları",
+    "description": "Otoparkta hepsi var. Elektriklisi de dahil.",
+    "sort_order": 1
+  },
+  {
+    "slug": "performans",
+    "title": "Performans",
+    "description": "Rakam bol, his tartışmalı.",
+    "sort_order": 2
+  },
+  {
+    "slug": "prestij-arazi",
+    "title": "Prestij ve arazi",
+    "description": "Amblem pahalı, gövde büyük.",
+    "sort_order": 3
+  },
+  {
+    "slug": "eski-arabalar",
+    "title": "Eski arabalar",
+    "description": "2005 ve öncesi. Kimi efsane, kimi ceza.",
+    "sort_order": 4
+  }
+]
