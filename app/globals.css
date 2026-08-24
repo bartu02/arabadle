@@ -20,20 +20,25 @@
   --color-sell: #f5b544;
   --color-burn: #ff4d3d;
 
-  /* Klasik modun kutuları. Wordle'ın dili: tutan yeşil, yakın sarı.
-     Üstlerine koyu yazı basılıyor — ölçüldü, ikisi de 8.8:1 ve 9.4:1.
+  /* Klasik modun kutuları: tutan yeşil, yakın sarı, tutmayan kırmızı.
+     Yeşil ve sarının üstüne koyu yazı basılıyor (8.80:1 ve 9.37:1),
+     kırmızının üstüne açık yazı (5.01:1). Kırmızı sayfa zeminine karşı
+     da 3.67:1, yani kutu olduğu net görünüyor.
 
-     Tutmayan kutunun kendi rengi yok: çerçeve + `--color-raised` yüzeyi.
-     Parlak bir gri denendi ve sayfa zeminine karşı 3:1'i geçmedi (en açık
-     aday 2.74:1), üstelik yeşil/sarıyla yarışmaya başlıyordu. Bu projede
-     aynı sorun etiket düğmelerinde çözülmüştü: ayrım opacity'den değil,
-     dolu/çerçeveli farkından gelir. Metin sayfanın normal kontrastında
-     okunuyor, kutu da yüzey farkıyla seçiliyor.
+     Kırmızı seçilirken bir ölü bölge çıktı: 4.5:1'i ne koyu ne açık
+     yazının tuttuğu bir aralık var (#c9453a civarı, ikisi de ~4.2).
+     Ya daha parlak + koyu yazı, ya daha derin + açık yazı olmak
+     zorundaydı; derin olan seçildi ki yeşil ve sarı öne çıkmaya devam
+     etsin — oyunun başında kutuların çoğu kırmızı oluyor.
 
-     Renk hiçbir zaman tek kanal değil: her kutunun içinde değerin kendisi
-     yazılı, yıl kutusunda ayrıca ok var. */
+     Wordle burada gri kullanıyor ve yeşil/kırmızı en kötü renk körlüğü
+     çifti; yine de kırmızı tercih edildi (kullanıcı kararı). Sorun
+     olmuyor çünkü renk hiçbir zaman tek kanal değil: her kutunun içinde
+     değerin kendisi yazılı, yıl kutusunda ayrıca ok var. Açıklık farkı
+     da büyük — kırmızının parlaklığı yeşilin yarısından az. */
   --color-hit: #35c46f;
   --color-near: #e0a92e;
+  --color-miss: #ba4035;
 
   --font-sans: var(--font-archivo), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;

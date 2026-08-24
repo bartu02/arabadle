@@ -79,7 +79,7 @@ export default async function KlasikPage() {
             {t("klasik.legendNear")}
           </li>
           <li className="flex items-center gap-3">
-            <span className="h-4 w-6 shrink-0 border border-line bg-raised" aria-hidden="true" />
+            <span className="h-4 w-6 shrink-0 border border-miss bg-miss" aria-hidden="true" />
             {t("klasik.legendMiss")}
           </li>
           <li className="flex items-center gap-3">

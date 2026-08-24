@@ -16,10 +16,9 @@ import { t } from "@/lib/i18n";
 const KUTU = {
   [DURUM.TAM]: "border-hit bg-hit text-bg",
   [DURUM.YAKIN]: "border-near bg-near text-bg",
-  // Zemin tamamen saydam bırakılınca kutu sayfadan zor seçiliyordu.
-  // Çerçeve + bir tık açık yüzey: kutu görünüyor, metnin kontrastı
-  // etkilenmiyor, dolu yeşil/sarıdan ayrımı hâlâ açıklık farkı.
-  [DURUM.UZAK]: "border-line bg-raised text-ink",
+  // Kırmızı yeşil ve sarıdan daha derin, üstüne açık yazı geliyor.
+  // Gerekçe app/globals.css'te.
+  [DURUM.UZAK]: "border-miss bg-miss text-ink",
 };
 
 const OK = { yukari: "▲", asagi: "▼" };

@@ -301,13 +301,24 @@ getiriyor; dönem yöntemi 210 günlük turda tekrarı sıfırlıyor. `mod`
 parametresi Fotoğraf modu için — aynı gün iki modda aynı araba çıkarsa
 biri diğerini ele veriyor.
 
-**Renk kırmızı değil gri.** Wordle'ın seçimi bu; yeşil/kırmızı en kötü renk
-körlüğü çifti, yeşil/gri açıklıkla ayrışıyor. Tutmayan kutu dolu da değil,
-**çerçeveli**: dolu koyu gri sayfa zeminine karşı 1.49:1 kalıyordu (en açık
-aday bile 2.74), yani kutu olduğu görünmüyordu. Aynı çözüm etiket
-düğmelerinde de kullanılmıştı. Yeşil ve sarı üstlerine koyu yazıyla 8.80:1
-ve 9.37:1. Renk hiçbir zaman tek kanal değil: her kutuda değerin kendisi
-yazılı, yıl kutusunda ayrıca ok var.
+**Kutu renkleri: yeşil `#35c46f` · sarı `#e0a92e` · kırmızı `#ba4035`.**
+İlk ikisi koyu yazıyla 8.80:1 ve 9.37:1, kırmızı açık yazıyla 5.01:1;
+kırmızının sayfa zeminine oranı da 3.67:1, yani kutu olduğu net görünüyor.
+
+Kırmızıda bir **ölü bölge** var: `#c9453a` civarında 4.5:1'i ne koyu ne
+açık yazı tutuyor (ikisi de ~4.2). Ya daha parlak + koyu yazı ya daha
+derin + açık yazı olmak zorunda; derin olan seçildi, çünkü oyunun başında
+kutuların çoğu kırmızı ve parlak kırmızı yeşil/sarıyı bastırıyordu.
+
+Önce Wordle'ı izleyip gri kullanıldı (yeşil/kırmızı en kötü renk körlüğü
+çifti). Kullanıcı 2026-08-24'te kırmızı istedi. Erişilebilirlik sorun
+değil: renk hiçbir zaman tek kanal değil — her kutuda değerin kendisi
+yazılı, yıl kutusunda ayrıca ok var, ve kırmızının parlaklığı yeşilin
+yarısından az. Paylaşım ızgarasındaki kare de 🟥 oldu; ekranla paylaşım
+metni aynı şeyi söylemeli.
+
+Denenmiş ve bırakılmış: **dolu koyu gri** sayfa zeminine karşı 1.49:1
+kalıyordu (en açık gri aday bile 2.74), yani kutu olduğu görünmüyordu.
 
 **Özellik verisi** `seed/ozellikler.json` — 210 araba × 7 alan. Değerler
 **anahtar** olarak saklanıyor (`sedan`, `petrol`, `fwd`), Türkçesi
