@@ -1,20 +1,24 @@
-import { LABELS } from "@/lib/game";
 import { t } from "@/lib/i18n";
 
-// Ürünün adı zaten üç etiketin kendisi. Renklendirince kullanıcı oyunun
-// renk kodunu daha ana sayfada öğreniyor (SPEC 7: "kartı okumadan
-// renkten anlamalı"). Dekoratif değil, anlam taşıyor.
-const COLOR = { buy: "text-buy", sell: "text-sell", burn: "text-burn" };
-
-export default function Wordmark() {
+/**
+ * Sitenin adı. Plaka referansı skeuomorfik bir grafik değil, tek bir
+ * işaret: solda mavi blok, yanında ad. Türk plakasının silueti bu kadarla
+ * tanınıyor ve SPEC 7'nin "dekoratif öğe yok" kuralını zorlamıyor.
+ *
+ * Site adı yalnızca burada ve tr.json'da geçiyor; değiştirmek iki yer.
+ */
+export default function Wordmark({ compact = false }) {
   return (
-    <>
-      {LABELS.map((label, index) => (
-        <span key={label}>
-          <span className={COLOR[label]}>{t(`labels.${label}`)}</span>
-          {index < LABELS.length - 1 && <span className="text-line">, </span>}
-        </span>
-      ))}
-    </>
+    <span className="inline-flex items-stretch">
+      <span
+        aria-hidden="true"
+        className={`flex items-center bg-plate text-bg ${
+          compact ? "px-1 text-[0.5em]" : "px-1.5 text-[0.42em]"
+        } font-bold leading-none tracking-normal`}
+      >
+        TR
+      </span>
+      <span className="pl-[0.18em]">{t("app.title")}</span>
+    </span>
   );
 }

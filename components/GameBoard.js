@@ -136,7 +136,7 @@ export default function GameBoard({ pack, rounds }) {
         </p>
         <p className="mt-3 text-muted">{t("game.resultSoon")}</p>
         <Link
-          href="/"
+          href="/al-sat-yak"
           className="mt-8 inline-block bg-ink px-6 py-3 text-sm font-semibold text-bg -outline-offset-2 focus-visible:outline-bg"
         >
           {t("game.backHome")}
@@ -152,7 +152,7 @@ export default function GameBoard({ pack, rounds }) {
       <header className="mb-4">
         <div className="flex items-baseline justify-between gap-4">
           <h1 className="text-sm font-medium text-muted">
-            <Link href="/" className="hover:text-ink">
+            <Link href="/al-sat-yak" className="hover:text-ink">
               {pack.title}
             </Link>
           </h1>

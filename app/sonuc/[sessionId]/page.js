@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import AlSatYakMark from "@/components/AlSatYakMark";
 import ShareButton from "@/components/ShareButton";
-import Wordmark from "@/components/Wordmark";
 import { t } from "@/lib/i18n";
 import { buildResult } from "@/lib/result";
 import { SAFE_SESSION_ID } from "@/lib/security";
@@ -162,10 +162,10 @@ export default async function ResultPage({ params }) {
   return (
     <main className="mx-auto w-full max-w-5xl px-6 py-12 sm:py-16">
       <Link
-        href="/"
+        href="/al-sat-yak"
         className="text-lg font-extrabold tracking-[-0.03em] opacity-80 hover:opacity-100"
       >
-        <Wordmark />
+        <AlSatYakMark />
       </Link>
 
       {/* Tek sayı, öne çıkan (SPEC 6.4). Sayfanın h1'i bu. */}
@@ -206,14 +206,14 @@ export default async function ResultPage({ params }) {
       <div className="mt-14 flex flex-wrap items-center gap-3">
         {result.pack && (
           <Link
-            href={`/oyna/${result.pack.slug}?tur=8`}
+            href={`/al-sat-yak/${result.pack.slug}?tur=8`}
             className="bg-ink px-6 py-3 text-sm font-semibold text-bg -outline-offset-2 focus-visible:outline-bg"
           >
             {t("result.playAgain")}
           </Link>
         )}
         <Link
-          href="/"
+          href="/al-sat-yak"
           className="border border-line px-6 py-3 text-sm font-semibold text-ink hover:border-muted -outline-offset-2"
         >
           {t("result.otherPack")}

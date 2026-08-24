@@ -85,7 +85,7 @@ export default function PackCard({ pack, index, open, onToggle, onClose }) {
               <Link
                 key={option.rounds}
                 ref={optionIndex === 0 ? defaultOptionRef : null}
-                href={`/oyna/${pack.slug}?tur=${option.rounds}`}
+                href={`/al-sat-yak/${pack.slug}?tur=${option.rounds}`}
                 className={
                   optionIndex === 0
                     ? "bg-ink px-5 py-2.5 text-sm font-semibold text-bg -outline-offset-2 focus-visible:outline-bg"

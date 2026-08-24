@@ -1,15 +1,11 @@
-import { LABELS } from "@/lib/game";
-
-// Sayfanın en üstünde ince üç renkli şerit. OG kartındaki işaretin aynısı;
-// her ekranda aynı yerde durup ürünü tek bir şeye bağlıyor.
-const COLOR = { buy: "bg-buy", sell: "bg-sell", burn: "bg-burn" };
-
+/**
+ * Sayfanın en üstünde ince şerit. Her ekranda aynı yerde durup siteyi tek
+ * bir işarete bağlıyor.
+ *
+ * Eskiden Al/Sat/Yak'ın üç rengiydi. Anket bir mod haline gelince o üç renk
+ * siteye ait olmaktan çıktı — şerit artık plakanın mavisi, yani sitenin
+ * kendi rengi. Üç renkli işaret Al, Sat, Yak modunun içinde yaşıyor.
+ */
 export default function BrandBar() {
-  return (
-    <div aria-hidden="true" className="fixed inset-x-0 top-0 z-50 flex h-[3px]">
-      {LABELS.map((label) => (
-        <div key={label} className={`flex-1 ${COLOR[label]}`} />
-      ))}
-    </div>
-  );
+  return <div aria-hidden="true" className="fixed inset-x-0 top-0 z-50 h-[3px] bg-plate" />;
 }

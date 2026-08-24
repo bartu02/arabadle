@@ -149,6 +149,46 @@ vermeden sonraki adıma geçme. **Bir adım bitince aşağıdaki tabloyu güncel
 - `/atif` sayfası CC BY / BY-SA'nın istediği atfı veriyor: her fotoğrafın
   sahibi, lisansı (linkli) ve kaynağı. Ana sayfanın altından linkli.
 
+### Site çok modlu: Plaka
+
+**Al, Sat, Yak artık site adı değil, bir oyun modu.** Site "Plaka" — günlük
+araba oyunları toplayan bir kabuk. Gerekçe: anketin ödülü kalabalığa bağlı,
+yani sıfır trafikte hiçbir şey göstermiyor. Tahmin oyunları ise ilk günden
+tek oyuncuyla çalışıyor; günlük trafiği onlar getirecek, o trafik anketin
+oylarını dolduracak.
+
+| rota | ne |
+|------|-----|
+| `/` | mod seçici |
+| `/al-sat-yak` | anketin paket listesi (eski ana sayfa) |
+| `/al-sat-yak/[packSlug]?tur=N` | oyun (eski `/oyna/[packSlug]`) |
+| `/fotograf` | yakında — yakın plandan tanı |
+| `/klasik` | yakında — özellik kutuları |
+| `/sonuc/[sessionId]`, `/atif` | değişmedi |
+
+**Marka üçe ayrıldı:**
+
+- `components/Wordmark.js` — sitenin adı. Plaka referansı skeuomorfik bir
+  grafik değil, tek işaret: solda mavi "TR" bloğu. Site adı yalnızca burada
+  ve `tr.json`'da geçiyor.
+- `components/AlSatYakMark.js` — üç etiket kendi renginde. Eskiden sitenin
+  wordmark'ıydı; işlevi duruyor (kullanıcı renk kodunu oynamadan öğreniyor,
+  SPEC 7) ama artık modun içinde.
+- `components/BrandBar.js` — üstteki 3px şerit artık `--color-plate`
+  (#3b82f6, koyu zeminde 5.41:1). Üç renk siteye ait olmaktan çıktı.
+
+**Statik sayfa + nonce'lı CSP = bozuk sayfa.** Yeni ana sayfa veri
+okumadığı için statik üretildi ve **16 CSP ihlali** verdi: statik HTML
+build anında donuyor, script'lerinde nonce olmuyor, tarayıcı hepsini
+blokluyor. Ölçüldü — statik `/` 16 ihlal, dinamik `/al-sat-yak` sıfır.
+
+Bu arada ortaya çıktı ki **404 sayfası baştan beri bozukmuş** (aynı sebep).
+İkisi de `force-dynamic` yapıldı ve `app/not-found.js` yazıldı.
+`uitest/csp-check.mjs` artık 404'ü de kontrol ediyor; sayfanın kendi 404
+durumunu tarayıcı konsola hata yazdığı için o satır filtreleniyor.
+
+**Kural:** yeni sayfa eklerken `force-dynamic` koy. Veri okumasa bile.
+
 ### Oyunun ödülü (eşik ve tur seçimi)
 
 Uzun süre fark edilmeyen şey: **oyunun tek fikri hiç çalışmıyordu.**

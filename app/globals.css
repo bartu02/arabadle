@@ -11,7 +11,11 @@
   --color-ink: #f5f6f8;
   --color-muted: #9096a3;
 
-  /* Al / Sat / Yak. Bu üç renk tüm üründe sabit kalır. */
+  /* Sitenin kendi rengi: plakanın mavi şeridi. Koyu zeminde 5.41:1,
+     üstüne basılan koyu yazı da aynı oranı alıyor (AA geçer). */
+  --color-plate: #3b82f6;
+
+  /* Al / Sat / Yak. Bu üç renk o modun içinde sabit kalır. */
   --color-buy: #3ddc84;
   --color-sell: #f5b544;
   --color-burn: #ff4d3d;

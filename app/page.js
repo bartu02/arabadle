@@ -1,71 +1,82 @@
 import Link from "next/link";
 
-import { t } from "@/lib/i18n";
-import { getSupabaseServerClient } from "@/lib/supabase/server";
-import PackList from "@/components/PackList";
 import Wordmark from "@/components/Wordmark";
+import { t } from "@/lib/i18n";
 
-// v1 trafiğinde önbelleğe gerek yok; seed'e eklenen paket anında görünsün.
+// Mod seçici veriye dokunmuyor, yani statik üretilebilirdi — ama üretilmemeli.
+//
+// Nonce'lı CSP (middleware.js) her istekte yeni nonce üretiyor. Statik
+// sayfanın HTML'i build anında donuyor ve içindeki script'lerde nonce
+// olmuyor; tarayıcı hepsini bloklayıp konsolu ihlalle dolduruyor. Ölçüldü:
+// statik `/` 16 CSP ihlali veriyordu, dinamik `/al-sat-yak` sıfır.
 export const dynamic = "force-dynamic";
 
-// Paket başına bir kapak fotoğrafı: paketin ilk üçlüsünün ilk arabası.
-async function getPacks() {
-  const supabase = getSupabaseServerClient();
+/**
+ * Modlar. `href` null ise henüz yapılmadı demek — kart görünür ama
+ * tıklanmaz. LoLdle/Cardle de yapılmamış modu gizlemek yerine gösteriyor;
+ * kullanıcı sitenin nereye gittiğini görüyor.
+ */
+const MODES = [
+  { key: "photo", href: null },
+  { key: "classic", href: null },
+  { key: "poll", href: "/al-sat-yak" },
+];
 
-  const [packs, trios] = await Promise.all([
-    supabase
-      .from("packs")
-      .select("id, slug, title, description, trios(count)")
-      .order("sort_order", { ascending: true }),
-    supabase
-      .from("trios")
-      .select("pack_id, sort_order, item_a_id")
-      .order("sort_order", { ascending: true }),
-  ]);
+function ModeCard({ mode, index }) {
+  const title = t(`modes.${mode.key}.title`);
+  const desc = t(`modes.${mode.key}.desc`);
+  const hazir = Boolean(mode.href);
 
-  for (const query of [packs, trios]) {
-    if (query.error) throw new Error(query.error.message);
-  }
+  const inner = (
+    <>
+      <div className="flex items-baseline gap-3">
+        <span className="text-sm font-semibold tabular-nums text-muted">
+          {String(index).padStart(2, "0")}
+        </span>
+        <h3
+          data-mode-title=""
+          className="text-2xl font-extrabold tracking-[-0.02em] sm:text-3xl"
+        >
+          {title}
+        </h3>
+        {!hazir && (
+          <span className="ml-auto shrink-0 border border-line px-2 py-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
+            {t("modes.soon")}
+          </span>
+        )}
+      </div>
+      <p className="mt-2 max-w-prose text-muted">{desc}</p>
+    </>
+  );
 
-  // Her paketin ilk üçlüsü (sort_order'a göre sıralı geldi).
-  const coverItemId = new Map();
-  for (const trio of trios.data ?? []) {
-    if (!coverItemId.has(trio.pack_id)) coverItemId.set(trio.pack_id, trio.item_a_id);
-  }
-
-  const ids = [...coverItemId.values()];
-  let covers = new Map();
-  if (ids.length > 0) {
-    const items = await supabase.from("items").select("id, image_url").in("id", ids);
-    if (items.error) throw new Error(items.error.message);
-    covers = new Map((items.data ?? []).map((item) => [item.id, item.image_url]));
-  }
-
-  return (packs.data ?? []).map((pack) => ({
-    slug: pack.slug,
-    title: pack.title,
-    description: pack.description ?? "",
-    trioCount: pack.trios?.[0]?.count ?? 0,
-    cover: covers.get(coverItemId.get(pack.id)) ?? null,
-  }));
-}
-
-export default async function HomePage() {
-  let packs = [];
-  let failed = false;
-
-  try {
-    packs = await getPacks();
-  } catch (error) {
-    // Gerçek sebep sunucu loguna; kullanıcıya tek satır.
-    console.error("Paketler okunamadı:", error.message);
-    failed = true;
+  if (!hazir) {
+    return (
+      <div data-mode="" data-ready="false" className="border border-line bg-surface/40 p-6 opacity-55">
+        {inner}
+      </div>
+    );
   }
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-6xl flex-col px-6 py-14 sm:py-20">
-      <header className="mb-16 sm:mb-24">
-        <h1 className="text-[clamp(3rem,11vw,7rem)] font-extrabold leading-[0.9] tracking-[-0.04em]">
+    <Link
+      data-mode=""
+      data-ready="true"
+      href={mode.href}
+      className="block border border-line bg-surface p-6 transition-colors hover:border-muted -outline-offset-2"
+    >
+      {inner}
+      <span className="mt-4 inline-block text-sm font-semibold text-ink underline underline-offset-4">
+        {t("modes.play")}
+      </span>
+    </Link>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <main className="mx-auto flex min-h-dvh w-full max-w-4xl flex-col px-6 py-14 sm:py-20">
+      <header className="mb-14 sm:mb-20">
+        <h1 className="text-[clamp(3rem,11vw,6rem)] font-extrabold leading-[0.9] tracking-[-0.04em]">
           <Wordmark />
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-snug text-muted sm:text-xl">
@@ -73,26 +84,18 @@ export default async function HomePage() {
         </p>
       </header>
 
-      {failed && <p className="text-muted">{t("home.error")}</p>}
-      {!failed && packs.length === 0 && (
-        <p className="text-muted">{t("home.empty")}</p>
-      )}
-
-      {/* Kategori bloğu. Bugün tek kategori var; ikincisi geldiğinde bu
-          blok olduğu gibi tekrarlanır, düzen değişmez. */}
-      {!failed && packs.length > 0 && (
-        <section>
-          <div className="mb-8 flex items-baseline justify-between gap-4 border-b border-line pb-4">
-            <h2 data-category="" className="text-sm font-bold uppercase tracking-[0.2em]">
-              {t("home.category")}
-            </h2>
-            <p data-category-note="" className="text-xs text-muted">
-              {t("home.categoryNote")}
-            </p>
-          </div>
-          <PackList packs={packs} />
-        </section>
-      )}
+      <section>
+        <h2 className="mb-6 border-b border-line pb-4 text-sm font-bold uppercase tracking-[0.2em]">
+          {t("modes.heading")}
+        </h2>
+        <ul className="grid grid-cols-1 gap-4">
+          {MODES.map((mode, i) => (
+            <li key={mode.key}>
+              <ModeCard mode={mode} index={i + 1} />
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <footer className="mt-auto pt-20">
         <Link

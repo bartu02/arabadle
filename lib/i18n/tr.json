@@ -1,8 +1,33 @@
 {
   "app": {
-    "title": "Al, Sat, Yak",
+    "title": "Plaka",
+    "tagline": "Her gün bir araba oyunu.",
+    "description": "Arabaları tanı, kalabalıkla karşılaş. Her gün yeni."
+  },
+  "modes": {
+    "heading": "Oyun modları",
+    "soon": "Yakında",
+    "play": "Oyna",
+    "photo": {
+      "title": "Fotoğraf",
+      "desc": "Yakın plandan tanı. Her hatada fotoğraf biraz uzaklaşır."
+    },
+    "classic": {
+      "title": "Klasik",
+      "desc": "Marka, ülke, kasa, yıl. Tahmin ettikçe kutular renk verir."
+    },
+    "poll": {
+      "title": "Al, Sat, Yak",
+      "desc": "Üç araba gelir. Birine Al, birine Sat, birine Yak dersin."
+    }
+  },
+  "alSatYak": {
     "tagline": "Üç araba gelir. Birine Al, birine Sat, birine Yak dersin.",
-    "description": "Üç araba, üç etiket. Sen dağıt, sonra kalabalığın ne dediğini gör."
+    "back": "Bütün modlar"
+  },
+  "notFound": {
+    "title": "Burada bir şey yok",
+    "body": "Aradığın sayfa taşınmış ya da hiç olmamış olabilir."
   },
   "labels": {
     "buy": "Al",
