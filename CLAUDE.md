@@ -185,11 +185,19 @@ Trafik geldikçe yükseltilebilir.
 ("Al 5 · Sat 1 · Yak 1 · 7 oy — yüzde için henüz erken"), tek oy varsa
 "İlk oyu sen verdin".
 
-**`0003_trio_vote_counts.sql` elle çalıştırılmalı** — Supabase SQL Editor.
-Ağırlıklandırma üçlü başına oy sayısına bağlı ve PostgREST group by
-yapmıyor. Çalıştırılmazsa oyun kilitlenmez: loga
-`Üçlü oy sayıları okunamadı, tur seçimi düz rastgele` düşer ve eski
-davranışa döner. Eşik ve ham sayı değişiklikleri migration'sız da çalışır.
+**`0003_trio_vote_counts.sql` çalıştırıldı** (2026-08-24, Supabase SQL
+Editor). Elle çalıştırılıyor çünkü ağırlıklandırma üçlü başına oy sayısına
+bağlı ve PostgREST group by yapmıyor. Çalıştırılmasaydı oyun kilitlenmezdi:
+loga `Üçlü oy sayıları okunamadı, tur seçimi düz rastgele` düşer ve eski
+davranışa dönerdi. Eşik ve ham sayı değişiklikleri migration'sız da çalışır.
+
+Canlıda ölçüldü (`scratchpad/bias-live.mjs`): paketin 5 üçlüsü eşiğin bir
+altına (7 oy) dolduruldu, geri kalanı 0'da bırakıldı, `/oyna?tur=16`
+otuz kez açıldı. Beşi de **30 açılışın 30'unda** geldi; düz rastgele
+olsaydı 3.33 beklenirdi. Anon `trio_vote_counts`'u çağıramıyor (42501).
+
+Bugünkü gerçek durum: 53 üçlü 0 oyda, 12'si 1'de, 5'i 2'de. En ileri üçlü
+2/8 — altı oyun daha.
 
 ### Tasarım
 
@@ -453,7 +461,7 @@ tabloyu `votes-live.json`'a yazar, `... restore` geri koyar. Yedek dosyası
 tek koşuya ait olduğu için `votes-backup.jsonl`'ı elle ayıklamaktan kolay.
 Sıra: `save` → testler → `restore` → `show` ile satır sayısını doğrula.
 
-25 paket:
+26 paket:
 saf mantık, yüzde, öne çıkan kurallar, sonuç hesabı, `/api/oy`, ve gerçek
 Edge'de oyun akışı / öne çıkan satır / sonuç+OG / ilk oyuncu / düzen-klavye-a11y
 / kontrast / tasarım (`photos/design-check.mjs`: fontun gerçekten yüklendiği,
@@ -486,8 +494,11 @@ Güvenlik tarafında dört paket daha:
   hiç oy yokken "ilk oyu sen verdin", eşiğin bir altında ham sayı ve
   **yüzde yok**, eşikte yüzde çubukları + öne çıkan satır. Bütün üçlüleri
   aynı sayıda oyla dolduruyor çünkü hangisinin geleceği rastgele.
-- `ramp-sim.mjs` / `bias-tune.mjs` — ağırlık eğrisini ölçer. `BIAS`
-  değiştirilecekse önce bunlar koşturulmalı.
+- `ramp-sim.mjs` / `bias-tune.mjs` — ağırlık eğrisini simülasyonda ölçer.
+  `BIAS` değiştirilecekse önce bunlar koşturulmalı.
+- `bias-live.mjs` — ağırlıklandırmanın **canlı uygulamada** çalıştığını
+  doğrular. Üçlü id'lerini sayfanın RSC yükünde arıyor (`buildRounds` →
+  `GameBoard` props oraya iniyor), o yüzden tarayıcı gerekmiyor.
 - `security/deploy-check.mjs <url>` — **deploy'dan sonra çalıştır.**
   Canlı siteyi dışarıdan denetler, veritabanı anahtarı kullanmaz: bütün
   güvenlik başlıkları, nonce'ın tazeliği, robots, `/api/oy`'un kapıdaki
