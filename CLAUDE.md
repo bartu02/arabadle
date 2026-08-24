@@ -239,6 +239,109 @@ olsaydı 3.33 beklenirdi. Anon `trio_vote_counts`'u çağıramıyor (42501).
 Bugünkü gerçek durum: 53 üçlü 0 oyda, 12'si 1'de, 5'i 2'de. En ileri üçlü
 2/8 — altı oyun daha.
 
+### Klasik mod (Wordle'ın araba hali)
+
+`/klasik` — her gün bir araba, listeden tahmin, altı kutu renk veriyor.
+Tahmin hakkı **sınırsız**, skor tahmin sayısı.
+
+**Tahmin bir bütün araba, ayrı yıl alanı yok.** Oyuncu 210 arabalık
+listeden birini seçiyor, yılı kendiliğinden geliyor. Serbest yıl sorulsaydı
+belirsizlik çıkardı: kayıtlarımız nesil, tekil araba değil. Corolla E210
+"2018-" ve hâlâ üretimde; "2024 model Corolla" diyen oyuncu ±2 kuralına
+takılırdı. Tek seçimle iki nesil çıkış yılı karşılaştırılıyor, elma elmaya.
+(CarSpotr yıl sorduğu için easy/hard mod ayırmak zorunda kalmış.)
+
+**Kutular ve eşikler** (`lib/klasik.js`):
+
+| kutu | yeşil | sarı |
+|------|-------|------|
+| Marka | aynı | aynı grup |
+| Ülke | aynı | — |
+| Kasa | aynı | — |
+| Yakıt | aynı | benzin ↔ hibrit |
+| Çekiş | aynı | — |
+| Yıl | ±1 | ±3, ayrıca ok |
+
+**Yıl ±1, ±2 değil.** CarSpotr ve Poeltl ±2 kullanıyor ama havuzumuz modern
+tarafa yığılmış (210 arabanın 122'si 2015 sonrası). Ölçüldü: ±2'de rastgele
+iki arabanın yılı **%21.1** ihtimalle yeşil oluyor, yani oyuncu hiçbir şey
+bilmeden her beş tahminin birinde yeşil görüyor. ±1'de %13.2.
+
+**"bağımsız" grubu sarı vermez.** O bir grup değil, "grubu yok" demek —
+12 markadan 27 araba orada. Sarı verilseydi Ferrari tahmini Suzuki'ye
+ipucu yakardı. Marka sarısı 210 arabanın 154'ünde çalışıyor.
+
+**Altı yeşil ≠ kazandın.** Yedi alanda birebir aynı **üç araba çifti** var:
+Mercedes 500E / S-Serisi W140, Porsche 911 (992) / Cayman GT4, Ford Focus
+mk4 / Fiesta ST mk8. Kazanma ölçütü slug eşitliği; bu durumda arayüz ayrıca
+"altı kutu tuttu ama araba bu değil" diyor. Hak sınırlı olsaydı o günün
+oyunu şansa kalırdı — sınırsız tutmanın bir sebebi bu.
+
+**Çözülebilirlik ölçüldü** (`tahmin/klasik-test.mjs` bölüm 9): bir tahmin
+havuzu 210'dan **18.3**'e indiriyor, ortalama **3.1** tahminde bitiyor
+(ortanca 3, en kötü 6). Simülasyon 210 arabanın özelliklerini bilen bir
+oyuncu varsayıyor, gerçek oyun daha uzun.
+
+Bu testin ilk hali yanlıştı: ölçüt "kutu şansa yüzde kaç yeşil oluyor"du ve
+yakıt %58.8 ile kaldı. Ama 210 arabanın 158'i benzinli, yani o oran verinin
+doğru yansıması — üstelik yakıtın yeşil **olmaması** çok bilgi veriyor.
+Ölçüt kalan aday sayısıyla değiştirildi.
+
+**Günün arabası sunucuda seçiliyor** (`lib/klasik-gun.js`, `server-only`).
+Wordle'ın kelime listesi istemcideydi ve datamine edildi; bizde de aynı
+yüzey var, props'a konan her şey RSC yüküne düşüyor (bu projede bizzat
+kullanıldı, `bias-live.mjs`). Karşılaştırma `/api/tahmin` içinde yapılıp
+geriye yalnızca renkler dönüyor. İstemciye inen tek veri 210 slug + ad.
+
+Sır olan gün numarası değil — o ekranda yazıyor — **günden arabaya giden
+eşleme**. Takvim hesabı bu yüzden paylaşılan `lib/klasik.js`'te, permütasyon
+`klasik-gun.js`'te. Dönem başına bir karıştırma yapılıyor: doğrudan
+`hash(gün) % n` almak 210 arabada aynı arabayı ortalama 18 günde tekrar
+getiriyor; dönem yöntemi 210 günlük turda tekrarı sıfırlıyor. `mod`
+parametresi Fotoğraf modu için — aynı gün iki modda aynı araba çıkarsa
+biri diğerini ele veriyor.
+
+**Renk kırmızı değil gri.** Wordle'ın seçimi bu; yeşil/kırmızı en kötü renk
+körlüğü çifti, yeşil/gri açıklıkla ayrışıyor. Tutmayan kutu dolu da değil,
+**çerçeveli**: dolu koyu gri sayfa zeminine karşı 1.49:1 kalıyordu (en açık
+aday bile 2.74), yani kutu olduğu görünmüyordu. Aynı çözüm etiket
+düğmelerinde de kullanılmıştı. Yeşil ve sarı üstlerine koyu yazıyla 8.80:1
+ve 9.37:1. Renk hiçbir zaman tek kanal değil: her kutuda değerin kendisi
+yazılı, yıl kutusunda ayrıca ok var.
+
+**Özellik verisi** `seed/ozellikler.json` — 210 araba × 7 alan. Değerler
+**anahtar** olarak saklanıyor (`sedan`, `petrol`, `fwd`), Türkçesi
+`tr.json`'dan geliyor; marka ve ülke özel isim olduğu için olduğu gibi.
+kasa/yakıt/çekiş elle dolduruldu (630 hücre), `note` alanı gerekçeyi
+taşıyor. İki kural: **48V mild-hybrid Benzin sayılır** (oyuncu hibrit
+deyince Corolla'yı düşünüyor, mild-hybrid Passat'ı değil) ve çok sürümlü
+modelde **TR'de en yaygın sürüm**.
+
+Doğrulama dört geçiş (`scratchpad/tahmin/dogrula.mjs`): kapsam+sözlük,
+mantık kuralları, **Wikimedia dosya adıyla çapraz kontrol** (14/14 uyuştu),
+ayırt etme gücü (4 alanla 42 araba çakışıyordu, 7 alanla 6). En riskli
+sekiz olgu ayrıca dışarıdan doğrulandı (Polestar 2'nin FWD→RWD geçişi,
+RS4 B5'in yalnızca Avant olması, Patrol Y62'nin dizelinin olmaması...).
+
+Üç satırda karar hâlâ açık ve `ACIK` olarak işaretli: BMW M3 G80 (taban
+RWD / Competition xDrive), Polestar 2 (üretim ikiye bölünmüş), RAV4 XA50
+(AWD-i / FWD hibrit). Kural uydurup kapatmak veriyi doğru yapmaz.
+
+**`0004_klasik.sql` çalıştırıldı** (2026-08-24, Supabase SQL Editor).
+Öncekilerden farkı: bu migration **zorunlu**. 0002 ve 0003 çalıştırılmazsa
+uygulama loga uyarı düşüp eski davranışa dönüyordu; burada sütunlar yoksa
+`items` sorgusu hata veriyor ve sayfa "Klasik şu an açılmıyor" gösteriyor
+(bu hâli de ölçüldü). Sırası: SQL Editor'de 0004 → `npm run seed` →
+sunucuyu yeniden başlat. Seed sonrası 210/210 araba dolu, `votes` 66
+satırda kaldı.
+
+**Sunucuyu yeniden başlatmadan `npm run build` çalıştırma.** Çalışan
+`next start` altından `.next` değişince istemci parçalarının hash'i
+tutmuyor, sayfa açılıyor ama JavaScript hiç yüklenmiyor. Bir kez
+tarayıcı testi bu yüzden sahte FAIL verdi. Windows'ta port dolu kalırsa:
+`Get-NetTCPConnection -LocalPort 3000 -State Listen` → `Stop-Process`.
+`pkill -f "next start"` burada işe yaramıyor.
+
 ### Tasarım
 
 SPEC 7 "şablon görünümlü, AI ile yapılmış hissi veren tasarımdan kaçın"

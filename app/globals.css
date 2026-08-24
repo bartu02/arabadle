@@ -20,6 +20,21 @@
   --color-sell: #f5b544;
   --color-burn: #ff4d3d;
 
+  /* Klasik modun kutuları. Wordle'ın dili: tutan yeşil, yakın sarı.
+     Üstlerine koyu yazı basılıyor — ölçüldü, ikisi de 8.8:1 ve 9.4:1.
+
+     Tutmayan kutunun kendi rengi yok: çerçeve + `--color-raised` yüzeyi.
+     Parlak bir gri denendi ve sayfa zeminine karşı 3:1'i geçmedi (en açık
+     aday 2.74:1), üstelik yeşil/sarıyla yarışmaya başlıyordu. Bu projede
+     aynı sorun etiket düğmelerinde çözülmüştü: ayrım opacity'den değil,
+     dolu/çerçeveli farkından gelir. Metin sayfanın normal kontrastında
+     okunuyor, kutu da yüzey farkıyla seçiliyor.
+
+     Renk hiçbir zaman tek kanal değil: her kutunun içinde değerin kendisi
+     yazılı, yıl kutusunda ayrıca ok var. */
+  --color-hit: #35c46f;
+  --color-near: #e0a92e;
+
   --font-sans: var(--font-archivo), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }

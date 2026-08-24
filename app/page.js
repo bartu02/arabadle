@@ -18,7 +18,7 @@ export const dynamic = "force-dynamic";
  */
 const MODES = [
   { key: "photo", href: null },
-  { key: "classic", href: null },
+  { key: "classic", href: "/klasik" },
   { key: "poll", href: "/al-sat-yak" },
 ];
 

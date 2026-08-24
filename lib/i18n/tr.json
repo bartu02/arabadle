@@ -104,5 +104,64 @@
     "sourceLink": "Commons sayfası",
     "link": "Fotoğraf atıfları",
     "back": "Ana sayfa"
+  },
+  "klasik": {
+    "tagline": "Günün arabasını bul. Her tahmin kutuları renklendirir.",
+    "back": "Bütün modlar",
+    "puzzle": "Bulmaca #{n}",
+    "placeholder": "Araba ara...",
+    "noMatch": "Eşleşen araba yok",
+    "alreadyGuessed": "Bunu zaten denedin",
+    "clear": "Temizle",
+    "guessCount": "{n} tahmin",
+    "firstGuess": "Hangi arabayı denersen dene — kutular yolu gösterir.",
+    "error": "Tahmin şu an gönderilemiyor.",
+    "twinTitle": "Altı kutu da tuttu ama araba bu değil.",
+    "twinBody": "Bütün özellikleri paylaşan başka bir araba var. Marka, ülke, kasa, yakıt, çekiş ve yıl aynı olabiliyor.",
+    "wonTitle": "Buldun",
+    "wonCount": "{n}. tahminde",
+    "wonFirst": "İlk tahminde",
+    "nextIn": "Yeni araba {sure} sonra",
+    "streak": "Seri {n}",
+    "share": "Sonucu kopyala",
+    "shared": "Kopyalandı",
+    "shareTitle": "Plaka · Klasik #{n}",
+    "legendTitle": "Kutular",
+    "legendHit": "Tam tutuyor",
+    "legendNear": "Yakın: marka aynı gruptan, yakıt akraba ya da yıl üç yıl içinde",
+    "legendMiss": "Tutmuyor",
+    "legendYear": "Ok, aranan arabanın daha yeni mi eski mi olduğunu söyler",
+    "columns": {
+      "brand": "Marka",
+      "country": "Ülke",
+      "body": "Kasa",
+      "fuel": "Yakıt",
+      "drivetrain": "Çekiş",
+      "year": "Yıl"
+    },
+    "body": {
+      "hatchback": "Hatchback",
+      "sedan": "Sedan",
+      "wagon": "Station Wagon",
+      "suv": "SUV",
+      "pickup": "Pickup",
+      "coupe": "Coupe",
+      "convertible": "Cabrio",
+      "mpv": "MPV"
+    },
+    "fuel": {
+      "petrol": "Benzin",
+      "diesel": "Dizel",
+      "hybrid": "Hibrit",
+      "electric": "Elektrik"
+    },
+    "drivetrain": {
+      "fwd": "Önden",
+      "rwd": "Arkadan",
+      "awd": "Dört çeker"
+    },
+    "newer": "aranan araba daha yeni",
+    "older": "aranan araba daha eski",
+    "empty": "Klasik şu an açılmıyor."
   }
 }

@@ -76,13 +76,46 @@ function assertUniqueSlugs(rows, label) {
 
 // --- doğrulama ---------------------------------------------------------------
 
-function validate(packs, items, trios) {
+// Klasik modun kutuları bu sözlüklerden besleniyor. Değerler anahtar
+// olarak saklanıyor; Türkçe karşılıkları lib/i18n/tr.json'da.
+// Aynı liste 0004_klasik.sql'de check constraint olarak da duruyor —
+// ikisi ayrışırsa seed veritabanına yazamaz ve hemen belli olur.
+const BODY = ["hatchback", "sedan", "wagon", "suv", "pickup", "coupe", "convertible", "mpv"];
+const FUEL = ["petrol", "diesel", "hybrid", "electric"];
+const DRIVETRAIN = ["fwd", "rwd", "awd"];
+
+function validate(packs, items, trios, ozellikler) {
   assertUniqueSlugs(packs, "packs.json");
   assertUniqueSlugs(items, "items.json");
+  assertUniqueSlugs(ozellikler, "ozellikler.json");
 
   for (const item of items) {
     if (!PHOTOS[item.slug]) {
       fail(`items.json: "${item.slug}" için lib/photos.js'te fotoğraf kaydı yok.`);
+    }
+  }
+
+  // Her arabanın özelliği olmalı. Eksik olan Klasik moda hiç girmez ve
+  // sessizce kaybolur; sessiz kayıp yerine burada durmak daha iyi.
+  const ozellikSlugs = new Set(ozellikler.map((o) => o.slug));
+  for (const item of items) {
+    if (!ozellikSlugs.has(item.slug)) {
+      fail(`ozellikler.json: "${item.slug}" için özellik kaydı yok.`);
+    }
+  }
+  const itemSlugSet = new Set(items.map((i) => i.slug));
+  for (const o of ozellikler) {
+    if (!itemSlugSet.has(o.slug)) fail(`ozellikler.json: "${o.slug}" items.json'da yok.`);
+    if (!BODY.includes(o.body)) fail(`ozellikler.json: "${o.slug}" geçersiz body "${o.body}".`);
+    if (!FUEL.includes(o.fuel)) fail(`ozellikler.json: "${o.slug}" geçersiz fuel "${o.fuel}".`);
+    if (!DRIVETRAIN.includes(o.drivetrain)) {
+      fail(`ozellikler.json: "${o.slug}" geçersiz drivetrain "${o.drivetrain}".`);
+    }
+    if (!Number.isInteger(o.year_start)) {
+      fail(`ozellikler.json: "${o.slug}" year_start tam sayı değil.`);
+    }
+    for (const alan of ["brand", "country", "brand_group"]) {
+      if (!o[alan]) fail(`ozellikler.json: "${o.slug}" ${alan} boş.`);
     }
   }
 
@@ -137,8 +170,9 @@ async function main() {
   const packs = readJson("packs.json");
   const items = readJson("items.json");
   const trios = readJson("trios.json");
+  const ozellikler = readJson("ozellikler.json");
 
-  validate(packs, items, trios);
+  validate(packs, items, trios, ozellikler);
 
   const supabase = createClient(url, secretKey, {
     auth: { persistSession: false, autoRefreshToken: false },
@@ -158,14 +192,28 @@ async function main() {
   if (packResult.error) fail(`packs yazılamadı: ${packResult.error.message}`);
   console.log(`  packs   ${packRows.length} kayıt`);
 
-  // items — fotoğraf yolu ve atıf metni lib/photos.js'ten gelir, orası tek kaynak.
-  const itemRows = items.map(({ slug, name, year_label }) => ({
-    slug,
-    name,
-    year_label: year_label ?? "",
-    image_url: PHOTOS[slug].file,
-    image_credit: photoCredit(slug),
-  }));
+  // items — fotoğraf yolu ve atıf metni lib/photos.js'ten gelir, orası tek
+  // kaynak. Klasik modun özellikleri de ozellikler.json'dan aynı satıra
+  // ekleniyor; note alanı gerekçe metni, veritabanına yazılmıyor.
+  const ozellik = new Map(ozellikler.map((o) => [o.slug, o]));
+  const itemRows = items.map(({ slug, name, year_label }) => {
+    const { brand, country, brand_group, year_start, body, fuel, drivetrain } =
+      ozellik.get(slug);
+    return {
+      slug,
+      name,
+      year_label: year_label ?? "",
+      image_url: PHOTOS[slug].file,
+      image_credit: photoCredit(slug),
+      brand,
+      country,
+      brand_group,
+      year_start,
+      body,
+      fuel,
+      drivetrain,
+    };
+  });
 
   const itemResult = await supabase
     .from("items")
