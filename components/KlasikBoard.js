@@ -30,7 +30,21 @@ export default function KlasikBoard({ arabalar, numara }) {
   const [gonderiliyor, setGonderiliyor] = useState(false);
   const [kalan, setKalan] = useState(null);
   const [kopyalandi, setKopyalandi] = useState(false);
+  const [paylasilabilir, setPaylasilabilir] = useState(false);
   const yuklendi = useRef(false);
+
+  // Telefonda paylaşım sayfası, masaüstünde pano.
+  //
+  // Paylaşılan ızgara bu oyunların büyüme yolu ve "panoya kopyalandı, şimdi
+  // git bir yere yapıştır" adımı yolun ortasında duruyordu. Ölçüt UA değil
+  // `pointer: coarse`: masaüstü Edge'de de `navigator.share` var ama orada
+  // Windows paylaşım panelini açıyor ve panoya kopyalamak daha hızlı.
+  useEffect(() => {
+    setPaylasilabilir(
+      typeof navigator.share === "function" &&
+        window.matchMedia("(pointer: coarse)").matches
+    );
+  }, []);
 
   const bitti = cevap !== null;
   const denenenler = new Set(tahminler.map((x) => x.slug));
@@ -127,6 +141,16 @@ export default function KlasikBoard({ arabalar, numara }) {
       window.location.origin + "/klasik",
     ].join("\n");
 
+    if (paylasilabilir) {
+      try {
+        await navigator.share({ text: metin });
+        return;
+      } catch (hata) {
+        // Vazgeçmek hata değil; başka bir sebeple açılmadıysa panoya düş.
+        if (hata?.name === "AbortError") return;
+      }
+    }
+
     try {
       await navigator.clipboard.writeText(metin);
       setKopyalandi(true);
@@ -206,7 +230,11 @@ export default function KlasikBoard({ arabalar, numara }) {
                 data-paylas=""
                 className="bg-ink px-6 py-3 text-sm font-bold text-bg -outline-offset-2 focus-visible:outline-bg"
               >
-                {kopyalandi ? t("klasik.shared") : t("klasik.share")}
+                {kopyalandi
+                  ? t("klasik.shared")
+                  : paylasilabilir
+                    ? t("klasik.shareNative")
+                    : t("klasik.share")}
               </button>
               {seri > 1 && (
                 <span data-seri="" className="text-sm font-semibold text-hit">

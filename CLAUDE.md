@@ -197,6 +197,56 @@ sol üst marka mavisi, diğer üçü Klasik'in kutu renkleri. Tek kopya,
 hem sekme ikonu (`layout.js` → `metadata.icons`) hem ana ekran ikonu
 (`app/manifest.js`) oraya bakıyor.
 
+### Arama motoru ve keşfedilebilirlik
+
+**Beklenti önce: bu türde SEO ana kanal değil.** Wordle Google'dan değil,
+paylaşılan ızgaradan büyüdü. Yine de teknik hijyen ucuz ve eksikti.
+
+Bulunan ve kapatılan boşluklar:
+
+- **Beş sayfanın üçünde başlık yoktu.** `/`, `/al-sat-yak` ve dört paket
+  sayfası arama sonuçlarında aynı "Arabadle" başlığıyla yarışıyordu.
+  Şimdi hepsinin kendi başlığı ve açıklaması var (`seo.*`, tr.json).
+  Ana sayfanın başlığı marka adı **olamaz** — kimse "Arabadle" aramıyor,
+  "araba tahmin oyunu" arıyor.
+- **Kanonik adres hiç yoktu.** `?tur=8` ve `?tur=16` iki ayrı sayfa gibi
+  indekslenebilirdi; artık ikisi de `/al-sat-yak/<paket>`'e işaret ediyor.
+- **`robots.txt` site haritasını duyurmuyordu.** Harita vardı ama Google'ın
+  onu bulmasının tek yolu Search Console'a elle girmekti.
+- **Site haritasında paket sayfaları yoktu.** Artık veritabanından
+  geliyorlar; Supabase'e ulaşılamazsa sabit dört sayfayla dönüyor
+  (anahtarsız derleme kırılmasın).
+- **Yapısal veri yoktu** (`lib/yapisal-veri.js`, `components/YapisalVeri.js`).
+  Bu sitede metin çok az — oyun ekranları neredeyse tamamen görsel — yani
+  arama motoruna tahmin bırakılacak şey de az. `WebSite` + iki `VideoGame`.
+  Uydurma `aggregateRating` yok: doğrulanamayan yapısal veri ihlal sayılıyor.
+- **`/atif` başlığı iki kez site adı taşıyordu**: "Fotoğraf atıfları —
+  Arabadle — Arabadle". Başlık şablonu zaten ekliyordu.
+- **Mobilde paylaşım artık native** (`navigator.share`). "Panoya kopyalandı,
+  şimdi git yapıştır" adımı büyümenin tam ortasında duruyordu. Ölçüt UA
+  değil `pointer: coarse` — masaüstü Edge'de de `share` var ama orada
+  Windows panelini açıyor ve pano daha hızlı.
+
+**`openGraph` tanımlayan sayfa miras görseli düşürüyor.** Ölçüldü: `/atif`
+(kendi `openGraph`'ı yok) kök kartını alıyordu, `/al-sat-yak` ve paket
+sayfaları **görselsiz** kalmıştı. `app/al-sat-yak/opengraph-image.js`
+eklendi; alt segmentlere de miras kalıyor.
+
+**`components/YapisalVeri.js` uygulamadaki tek `dangerouslySetInnerHTML`.**
+Güvenlik notu "hiçbir yerde yok" diyordu, artık bir tane var ve sınırı net:
+içerik yalnızca tr.json + site adresinden `JSON.stringify` ile üretiliyor,
+istekten/veritabanından hiçbir şey girmiyor, `<` kaçırılıyor ve nonce
+veriliyor. JSON-LD'yi React'te basmanın başka yolu yok (metin çocuğu olarak
+verilirse tırnaklar kaçırılıp JSON bozuluyor).
+
+`scratchpad/seo-check.mjs` bunların hepsini kilitliyor (90 kontrol, tarayıcı
+gerekmiyor). Canlı adrese karşı da koşuyor:
+`node seo-check.mjs https://arabadle.vercel.app`.
+
+**Kod dışında kalan, asıl iş:** dizin siteleri ("Wordle alternatifleri"
+listeleri) ve Türk araba toplulukları. Bu ikisi teknik SEO'dan çok daha
+fazla trafik getirir ve ikisi de elle yapılacak iş.
+
 ### Site kabuğu
 
 Üç sayfa vardı, ortada site yoktu: her sayfa kendi "Bütün modlar" metin
@@ -802,6 +852,11 @@ Güvenlik tarafında dört paket daha:
   **`addInitScript` ile localStorage'a yazarken birleştir**, düz `setItem`
   her yüklemede kaydı eziyor — `klasik-oyna.mjs`'in "yenilemede oyun
   duruyor mu" kontrolü bir kez bu yüzden sahte FAIL verdi.
+- `seo-check.mjs` — arama motoru hijyeni: her sayfanın kendi başlığı ve
+  açıklaması (ve tekil olmaları, uzunluk sınırları), kanonik adresler,
+  `?tur=`'un kanonikten düşmesi, robots↔harita tutarlılığı, JSON-LD'nin
+  geçerliliği ve nonce'ı, OG görsellerinin gerçekten üretilmesi, noindex
+  olmaması, tek h1. Tarayıcı gerekmiyor; canlı adrese karşı da koşar.
 - `uitest/secici.mjs` — araba seçici: boş kutuya tıklayınca listenin
   açılması, sıranın ada göre olması, **kazara Enter'ın tahmin
   göndermemesi**, ok tuşları, filtreleme, denenen arabanın pasif kalması,

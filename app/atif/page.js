@@ -5,7 +5,10 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: `${t("credits.title")} — ${t("app.title")}`,
+  alternates: { canonical: "/atif" },
+  // Site adını layout'un başlık şablonu ekliyor; burada tekrarlanınca
+  // "Fotoğraf atıfları — Arabadle · Arabadle" çıkıyordu.
+  title: t("credits.title"),
   description: t("credits.intro"),
 };
 

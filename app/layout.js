@@ -23,7 +23,7 @@ export const metadata = {
   title: {
     default: t("app.title"),
     // Alt sayfalar yalnızca kendi adını veriyor, site adı buradan ekleniyor.
-    template: `%s — ${t("app.title")}`,
+    template: `%s · ${t("app.title")}`,
   },
   description: t("app.description"),
   applicationName: t("app.title"),

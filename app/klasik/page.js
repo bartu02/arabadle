@@ -1,7 +1,9 @@
 import KlasikAraclar from "@/components/KlasikAraclar";
+import YapisalVeri from "@/components/YapisalVeri";
 import KlasikBoard from "@/components/KlasikBoard";
 import { bugununNumarasi } from "@/lib/klasik";
 import { tumArabalar } from "@/lib/klasik-sunucu";
+import { oyunBelgesi, oyunVerisi } from "@/lib/yapisal-veri";
 import { t } from "@/lib/i18n";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -11,8 +13,15 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: t("modes.classic.title"),
-  description: t("klasik.tagline"),
+  title: t("seo.classicTitle"),
+  description: t("seo.classicDescription"),
+  // Kanonik adres sorgu dizesini atıyor: /klasik her gün aynı adres.
+  alternates: { canonical: "/klasik" },
+  openGraph: {
+    title: t("seo.classicTitle"),
+    description: t("seo.classicDescription"),
+    url: "/klasik",
+  },
 };
 
 export default async function KlasikPage() {
@@ -35,6 +44,16 @@ export default async function KlasikPage() {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-5 py-10 sm:px-6 sm:py-14">
+      <YapisalVeri
+        veri={oyunBelgesi(
+          oyunVerisi({
+            yol: "/klasik",
+            ad: t("seo.classicTitle"),
+            aciklama: t("seo.classicDescription"),
+          })
+        )}
+      />
+
       <header className="mb-8">
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
           <h1 className="text-4xl font-extrabold tracking-[-0.03em] sm:text-5xl">

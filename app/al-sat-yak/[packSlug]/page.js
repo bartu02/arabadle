@@ -10,6 +10,46 @@ export const dynamic = "force-dynamic";
 
 const ROUND_CHOICES = [8, 16];
 
+/**
+ * Paket sayfasının kendi başlığı ve kanonik adresi.
+ *
+ * Dört paket sayfası da arama sonuçlarında "Arabadle" başlığıyla
+ * çıkıyordu, yani birbirinin kopyası görünüyorlardı. Kanonik adres
+ * `?tur=` sorgusunu atıyor: `?tur=8` ve `?tur=16` aynı sayfa, ikisi ayrı
+ * URL olarak indekslenmemeli.
+ */
+export async function generateMetadata({ params }) {
+  const { packSlug } = await params;
+
+  try {
+    const supabase = getSupabaseServerClient();
+    const { data } = await supabase
+      .from("packs")
+      .select("title, description, trios(count)")
+      .eq("slug", packSlug)
+      .maybeSingle();
+
+    if (!data) return { alternates: { canonical: `/al-sat-yak/${packSlug}` } };
+
+    const baslik = t("seo.packTitle", { pack: data.title });
+    const aciklama = t("seo.packDescription", {
+      pack: data.title,
+      desc: data.description ?? "",
+      count: data.trios?.[0]?.count ?? 0,
+    });
+
+    return {
+      title: baslik,
+      description: aciklama,
+      alternates: { canonical: `/al-sat-yak/${packSlug}` },
+      openGraph: { title: baslik, description: aciklama, url: `/al-sat-yak/${packSlug}` },
+    };
+  } catch {
+    // Başlık üretmek sayfayı düşürmemeli; kanonik adres yine de verilsin.
+    return { alternates: { canonical: `/al-sat-yak/${packSlug}` } };
+  }
+}
+
 const ITEM_FIELDS = "id, slug, name, year_label, image_url, image_credit";
 
 // trios'un items'a üç ayrı foreign key'i var; PostgREST'e hangisi olduğunu

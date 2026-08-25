@@ -1,10 +1,25 @@
 import { t } from "@/lib/i18n";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import AlSatYakMark from "@/components/AlSatYakMark";
+import YapisalVeri from "@/components/YapisalVeri";
 import PackList from "@/components/PackList";
+import { oyunBelgesi, oyunVerisi } from "@/lib/yapisal-veri";
 
 // v1 trafiğinde önbelleğe gerek yok; seed'e eklenen paket anında görünsün.
 export const dynamic = "force-dynamic";
+
+// Bu sayfanın da kendi başlığı olmalıydı: /, /al-sat-yak ve dört paket
+// sayfası arama sonuçlarında aynı "Arabadle" başlığıyla yarışıyordu.
+export const metadata = {
+  title: t("seo.pollTitle"),
+  description: t("seo.pollDescription"),
+  alternates: { canonical: "/al-sat-yak" },
+  openGraph: {
+    title: t("seo.pollTitle"),
+    description: t("seo.pollDescription"),
+    url: "/al-sat-yak",
+  },
+};
 
 // Paket başına bir kapak fotoğrafı: paketin ilk üçlüsünün ilk arabası.
 async function getPacks() {
@@ -62,6 +77,16 @@ export default async function HomePage() {
 
   return (
     <main className="mx-auto w-full max-w-6xl px-5 py-12 sm:px-6 sm:py-16">
+      <YapisalVeri
+        veri={oyunBelgesi(
+          oyunVerisi({
+            yol: "/al-sat-yak",
+            ad: t("seo.pollTitle"),
+            aciklama: t("seo.pollDescription"),
+          })
+        )}
+      />
+
       <header className="mb-12 sm:mb-16">
         {/* Modun kendi işareti: üç etiket kendi renginde, kullanıcı renk
             kodunu oynamadan öğreniyor (SPEC 7). */}

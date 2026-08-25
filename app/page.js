@@ -1,9 +1,28 @@
 import GunSeridi from "@/components/GunSeridi";
 import ModKarti from "@/components/ModKarti";
 import Wordmark from "@/components/Wordmark";
+import YapisalVeri from "@/components/YapisalVeri";
 import { bugununNumarasi } from "@/lib/klasik";
 import { MODES } from "@/lib/modes";
+import { siteVerisi } from "@/lib/yapisal-veri";
 import { t } from "@/lib/i18n";
+
+// Başlık `title.absolute`: layout'un "%s · Arabadle" şablonu buraya
+// uygulansaydı "Arabadle · Arabadle" çıkardı.
+//
+// Ana sayfanın başlığı marka adından ibaret olamaz — kimse "Arabadle"
+// aramıyor, "araba tahmin oyunu" arıyor. Üstelik `/`, `/al-sat-yak` ve
+// paket sayfaları aynı başlıkla ("Arabadle") yarışıyordu.
+export const metadata = {
+  title: { absolute: t("seo.homeTitle") },
+  description: t("seo.homeDescription"),
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: t("seo.homeTitle"),
+    description: t("seo.homeDescription"),
+    url: "/",
+  },
+};
 
 // Mod seçici veriye dokunmuyor, yani statik üretilebilirdi — ama üretilmemeli.
 //
@@ -20,6 +39,8 @@ export default function HomePage() {
 
   return (
     <main className="mx-auto w-full max-w-5xl px-5 py-12 sm:px-6 sm:py-16">
+      <YapisalVeri veri={siteVerisi()} />
+
       <header className="mb-8">
         <h1 className="text-[clamp(2.75rem,10vw,5.5rem)] font-extrabold leading-[0.9] tracking-[-0.04em]">
           <Wordmark />

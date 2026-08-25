@@ -25,6 +25,16 @@
     "skip": "İçeriğe geç",
     "menu": "Modlar"
   },
+  "seo": {
+    "homeTitle": "Arabadle — her gün bir araba tahmin oyunu",
+    "homeDescription": "Türkçe günlük araba oyunları. Klasik'te günün arabasını altı ipucuyla bul, Al Sat Yak'ta üç arabaya karar ver. Kayıt yok, her gün yeni bir araba.",
+    "classicTitle": "Klasik — günün arabasını bul",
+    "classicDescription": "Wordle'ın araba hali. Her gün bir araba; listeden tahmin et, altı kutu marka, ülke, kasa, yakıt, çekiş ve yılı karşılaştırsın. Tahmin hakkı sınırsız.",
+    "pollTitle": "Al, Sat, Yak — üç arabadan birini seç",
+    "pollDescription": "Üç araba gelir: birine Al, birine Sat, birine Yak dersin. Sonunda kalabalıkla ne kadar uyuştuğunu görürsün. 210 araba, dört paket.",
+    "packTitle": "{pack} — Al, Sat, Yak",
+    "packDescription": "{pack}: {desc} {count} üçlü. Al, Sat, Yak oyna, kalabalıkla karşılaş."
+  },
   "hub": {
     "today": "Bugün",
     "puzzle": "#{n}",
@@ -137,6 +147,7 @@
     "nextIn": "Yeni araba {sure} sonra",
     "streak": "Seri {n}",
     "share": "Sonucu kopyala",
+    "shareNative": "Sonucu paylaş",
     "shared": "Kopyalandı",
     "shareTitle": "Arabadle · Klasik #{n}",
     "legendTitle": "Kutular",
