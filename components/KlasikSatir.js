@@ -29,7 +29,7 @@ function metin(alan, deger) {
   return t(`klasik.${alan}.${deger}`);
 }
 
-export default function KlasikSatir({ tahmin, yeni = false }) {
+export default function KlasikSatir({ tahmin, yeni = false, ornek = false }) {
   // Yalnızca yeni gelen satır bir kez içeri giriyor. SPEC 7 animasyonu
   // açılış anına sınırlıyor; bu da satırın açılışı. prefers-reduced-motion
   // açıkken globals.css geçişi kapattığı için satır anında beliriyor.
@@ -40,10 +40,17 @@ export default function KlasikSatir({ tahmin, yeni = false }) {
 
   return (
     <li
-      data-tahmin=""
+      // Kanca tekil olmali: "nasil oynanir" penceresindeki ornek satir da
+      // bu bilesenle ciziliyor ve ikisi ayni niteligi tasiyinca testlerin
+      // tahmin sayaci ikiye katlandi. data-tahmin artik yalnizca tahtadaki
+      // gercek tahmin, ornek data-ornek.
+      {...(ornek ? { "data-ornek": "" } : { "data-tahmin": "" })}
       className={`transition-opacity duration-300 ease-out ${girdi ? "opacity-100" : "opacity-0"}`}
     >
-      <p data-tahmin-ad="" className="mb-1.5 text-sm font-semibold text-ink">
+      <p
+        {...(ornek ? {} : { "data-tahmin-ad": "" })}
+        className="mb-1.5 text-sm font-semibold text-ink"
+      >
         {tahmin.ad}
       </p>
 

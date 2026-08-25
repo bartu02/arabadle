@@ -99,7 +99,7 @@ export default async function GamePage({ params, searchParams }) {
   if (!failed && !game) notFound();
 
   return (
-    <main className="mx-auto flex w-full max-w-[1600px] flex-col px-5 py-5 sm:px-8 sm:py-6 md:h-dvh">
+    <main className="mx-auto flex w-full max-w-[1600px] flex-col px-5 py-5 sm:px-8 sm:py-6 md:h-[calc(100dvh-var(--h-baslik))]">
       {failed && <p className="text-muted">{t("game.error")}</p>}
       {!failed && game.rounds.length === 0 && (
         <p className="text-muted">{t("game.empty")}</p>

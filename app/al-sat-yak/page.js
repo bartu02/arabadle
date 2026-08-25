@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { t } from "@/lib/i18n";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import AlSatYakMark from "@/components/AlSatYakMark";
@@ -63,17 +61,11 @@ export default async function HomePage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-6xl flex-col px-6 py-14 sm:py-20">
-      <header className="mb-16 sm:mb-24">
-        <Link
-          href="/"
-          className="text-sm text-muted underline-offset-4 hover:text-ink hover:underline"
-        >
-          {t("alSatYak.back")}
-        </Link>
+    <main className="mx-auto w-full max-w-6xl px-5 py-12 sm:px-6 sm:py-16">
+      <header className="mb-12 sm:mb-16">
         {/* Modun kendi işareti: üç etiket kendi renginde, kullanıcı renk
             kodunu oynamadan öğreniyor (SPEC 7). */}
-        <h1 className="mt-5 text-[clamp(3rem,11vw,7rem)] font-extrabold leading-[0.9] tracking-[-0.04em]">
+        <h1 className="text-[clamp(2.75rem,10vw,6rem)] font-extrabold leading-[0.9] tracking-[-0.04em]">
           <AlSatYakMark />
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-snug text-muted sm:text-xl">
@@ -101,15 +93,6 @@ export default async function HomePage() {
           <PackList packs={packs} />
         </section>
       )}
-
-      <footer className="mt-auto pt-20">
-        <Link
-          href="/atif"
-          className="text-sm text-muted underline-offset-4 hover:text-ink hover:underline"
-        >
-          {t("credits.link")}
-        </Link>
-      </footer>
     </main>
   );
 }

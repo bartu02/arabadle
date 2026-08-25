@@ -21,6 +21,19 @@
       "desc": "Üç araba gelir. Birine Al, birine Sat, birine Yak dersin."
     }
   },
+  "nav": {
+    "skip": "İçeriğe geç",
+    "menu": "Modlar"
+  },
+  "hub": {
+    "today": "Bugün",
+    "puzzle": "#{n}",
+    "nextIn": "Yeni gün {sure} sonra",
+    "done": "Bugün oynandı",
+    "streakShort": "{n} gün seri",
+    "howTitle": "Nasıl çalışıyor",
+    "howBody": "Her gün üç oyun. Hepsi aynı 210 arabadan besleniyor, hepsi gece yarısı yenileniyor. Kayıt yok, giriş yok — sonucun tarayıcında duruyor."
+  },
   "alSatYak": {
     "tagline": "Üç araba gelir. Birine Al, birine Sat, birine Yak dersin.",
     "back": "Bütün modlar"
@@ -162,6 +175,25 @@
     },
     "newer": "aranan araba daha yeni",
     "older": "aranan araba daha eski",
-    "empty": "Klasik şu an açılmıyor."
+    "empty": "Klasik şu an açılmıyor.",
+    "close": "Kapat",
+    "howOpen": "Nasıl oynanır",
+    "howTitle": "Nasıl oynanır",
+    "howStep1": "Listeden bir araba seç. Hangi arabayı seçersen seç, hepsi ipucu verir.",
+    "howStep2": "Altı kutu senin arabanı günün arabasıyla karşılaştırır.",
+    "howStep3": "Tahmin hakkın sınırsız. Skorun kaç tahminde bulduğun.",
+    "howExample": "Örnek tahmin",
+    "howExampleNote": "Marka tutmuş. Yakıt yakın — biri benzin, diğeri hibrit. Yıl oku aranan arabanın daha yeni olduğunu söylüyor.",
+    "howGot": "Başla",
+    "statsOpen": "İstatistik",
+    "statsTitle": "İstatistiklerin",
+    "statsPlayed": "Oynanan",
+    "statsWon": "Bulunan",
+    "statsStreak": "Seri",
+    "statsBest": "En iyi",
+    "statsAvg": "Ort. tahmin",
+    "statsDist": "Kaç tahminde bulduğun",
+    "statsEmpty": "İlk bulmacanı çöz, buraya dolsun.",
+    "statsMore": "{n}+"
   }
 }

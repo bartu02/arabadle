@@ -50,6 +50,14 @@
 }
 
 @layer base {
+  :root {
+    /* Yapışkan başlığın yüksekliği: 3px marka şeridi + 56px çubuk.
+       İki yer buna bakıyor — Al, Sat, Yak oyun ekranı tam ekran olduğu
+       için bu kadar kısalıyor, Klasik tahtasının yapışkan sütun
+       başlıkları da tam buranın altına oturuyor. */
+    --h-baslik: 59px;
+  }
+
   html {
     color-scheme: dark;
   }

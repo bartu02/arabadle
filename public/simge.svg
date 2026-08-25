@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!--
+    Sitenin simgesi. Tek kopya: hem sekme ikonu (app/layout.js -> metadata.icons)
+    hem ana ekran ikonu (app/manifest.js) buraya bakıyor.
+
+    Önceki simge Al, Sat, Yak'ın üç renkli çubuğuydu; o mod artık sitenin
+    tamamı değil, sekmede duran işaretin markayla uyuşması gerekiyordu.
+
+    Dört kare: sol üst marka mavisi (wordmark'taki karenin aynısı), diğer
+    üçü Klasik'in kutu renkleri. 16 pikselde bile "kutulu tahmin oyunu"
+    olduğu okunuyor — bütün -dle oyunlarının ortak dili bu.
+  -->
+  <rect width="32" height="32" fill="#08090c"/>
+  <rect x="3"  y="3"  width="12" height="12" fill="#3b82f6"/>
+  <rect x="17" y="3"  width="12" height="12" fill="#35c46f"/>
+  <rect x="3"  y="17" width="12" height="12" fill="#e0a92e"/>
+  <rect x="17" y="17" width="12" height="12" fill="#ba4035"/>
+</svg>

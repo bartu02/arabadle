@@ -5,7 +5,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import ArabaSecici from "./ArabaSecici";
 import KlasikSatir from "./KlasikSatir";
-import { ALANLAR, gunSonunaKalan, paylasimIzgarasi } from "@/lib/klasik";
+import { ALANLAR, gunSonunaKalan, paylasimIzgarasi, sureMetni } from "@/lib/klasik";
+import { baslat, bitir, oku, yaz } from "@/lib/klasik-depo";
 import { t } from "@/lib/i18n";
 
 /**
@@ -17,34 +18,10 @@ import { t } from "@/lib/i18n";
  * alanda birebir aynı üç araba çifti var (911 / Cayman GT4) — orada hak
  * sınırlı olsaydı o günün oyunu şansa kalırdı. Sınır sonradan eklenebilir,
  * kaldırılamaz.
+ *
+ * Kayıt ve istatistikler lib/klasik-depo.js'te; bu dosya yalnızca oyunu
+ * sürüyor.
  */
-
-const DEPO = "arabadle-klasik-v1";
-
-/** localStorage her yerde çalışmıyor (gizli sekme, kapalı site verisi). */
-function depodanOku() {
-  try {
-    const ham = window.localStorage.getItem(DEPO);
-    return ham ? JSON.parse(ham) : null;
-  } catch {
-    return null;
-  }
-}
-
-function depoyaYaz(deger) {
-  try {
-    window.localStorage.setItem(DEPO, JSON.stringify(deger));
-  } catch {
-    // Kaydedemiyorsak oyun yine oynanır, sadece yenilemede sıfırlanır.
-  }
-}
-
-function sureMetni(ms) {
-  const saat = Math.floor(ms / 3_600_000);
-  const dakika = Math.floor((ms % 3_600_000) / 60_000);
-  return `${saat}s ${dakika}dk`;
-}
-
 export default function KlasikBoard({ arabalar, numara }) {
   const [tahminler, setTahminler] = useState([]);
   const [cevap, setCevap] = useState(null);
@@ -60,21 +37,22 @@ export default function KlasikBoard({ arabalar, numara }) {
 
   // --- kayıtlı oyun ----------------------------------------------------------
   useEffect(() => {
-    const kayit = depodanOku();
-    if (kayit?.numara === numara) {
+    const kayit = oku();
+    if (kayit.numara === numara) {
       setTahminler(kayit.tahminler ?? []);
       setCevap(kayit.cevap ?? null);
     }
     // Seri gün değişse de duruyor; kopması ancak bir günün atlanmasıyla olur.
-    setSeri(kayit?.seri ?? 0);
+    setSeri(kayit.seri ?? 0);
     yuklendi.current = true;
   }, [numara]);
 
   useEffect(() => {
     if (!yuklendi.current) return;
-    const kayit = depodanOku() ?? {};
-    depoyaYaz({ ...kayit, numara, tahminler, cevap, seri });
-  }, [numara, tahminler, cevap, seri]);
+    // Taze okuyup üstüne yazıyoruz: istatistik alanları (oynanan, dağılım,
+    // en iyi seri) bu efektin dışında güncelleniyor, silinmemeli.
+    yaz({ ...oku(), numara, tahminler, cevap });
+  }, [numara, tahminler, cevap]);
 
   // --- geri sayım ------------------------------------------------------------
   useEffect(() => {
@@ -113,6 +91,10 @@ export default function KlasikBoard({ arabalar, numara }) {
           return;
         }
 
+        // Bu bulmacaya ilk tahmin: "oynanan" sayacı burada artıyor, sayfa
+        // açılışında değil. Bakıp çıkan biri oyunu oynamış sayılmamalı.
+        if (tahminler.length === 0) yaz(baslat(oku(), numara));
+
         setTahminler((onceki) => [
           ...onceki,
           { slug: veri.slug, ad: veri.ad, sonuc: veri.sonuc, ikiz: veri.ikiz },
@@ -120,10 +102,9 @@ export default function KlasikBoard({ arabalar, numara }) {
 
         if (veri.dogru) {
           setCevap(veri.cevap);
-          const kayit = depodanOku() ?? {};
-          // Seri ancak dün de kazanılmışsa uzuyor.
-          setSeri(kayit.sonKazanan === numara - 1 ? (kayit.seri ?? 0) + 1 : 1);
-          depoyaYaz({ ...kayit, sonKazanan: numara });
+          const guncel = bitir(oku(), numara, tahminler.length + 1);
+          yaz(guncel);
+          setSeri(guncel.seri);
         }
       } catch {
         setHata(true);
@@ -131,7 +112,7 @@ export default function KlasikBoard({ arabalar, numara }) {
         setGonderiliyor(false);
       }
     },
-    [bitti, gonderiliyor, numara]
+    [bitti, gonderiliyor, numara, tahminler.length]
   );
 
   // --- paylaşım --------------------------------------------------------------
@@ -168,9 +149,15 @@ export default function KlasikBoard({ arabalar, numara }) {
             onSec={tahminEt}
             kapali={gonderiliyor}
           />
-          {tahminler.length === 0 && (
-            <p className="mt-2 text-sm text-muted">{t("klasik.firstGuess")}</p>
-          )}
+          <div className="mt-2 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+            {tahminler.length === 0 ? (
+              <p className="text-sm text-muted">{t("klasik.firstGuess")}</p>
+            ) : (
+              <p data-tahmin-sayaci="" className="text-sm tabular-nums text-muted">
+                {t("klasik.guessCount", { n: tahminler.length })}
+              </p>
+            )}
+          </div>
           {hata && (
             <p role="alert" className="mt-2 text-sm text-near">
               {t("klasik.error")}
@@ -187,7 +174,7 @@ export default function KlasikBoard({ arabalar, numara }) {
       )}
 
       {bitti && (
-        <div data-kazandi="" className="bg-surface">
+        <div data-kazandi="" className="border border-line bg-surface">
           {cevap.gorsel && (
             <div className="relative aspect-[4/3] w-full overflow-hidden bg-bg">
               <Image
@@ -217,17 +204,17 @@ export default function KlasikBoard({ arabalar, numara }) {
                 type="button"
                 onClick={paylas}
                 data-paylas=""
-                className="border border-line px-6 py-3 text-sm font-semibold text-ink hover:border-muted -outline-offset-2"
+                className="bg-ink px-6 py-3 text-sm font-bold text-bg -outline-offset-2 focus-visible:outline-bg"
               >
                 {kopyalandi ? t("klasik.shared") : t("klasik.share")}
               </button>
               {seri > 1 && (
-                <span data-seri="" className="text-sm font-semibold text-muted">
+                <span data-seri="" className="text-sm font-semibold text-hit">
                   {t("klasik.streak", { n: seri })}
                 </span>
               )}
               {kalan !== null && (
-                <span className="text-sm text-muted">
+                <span className="ml-auto text-sm tabular-nums text-muted">
                   {t("klasik.nextIn", { sure: sureMetni(kalan) })}
                 </span>
               )}
@@ -240,9 +227,13 @@ export default function KlasikBoard({ arabalar, numara }) {
 
       {tahminler.length > 0 && (
         <div>
-          {/* Sütun başlıkları bir kez. Kutuların içinde değerin kendisi
-              yazılı olduğu için renk hiçbir zaman tek kanal değil. */}
-          <div className="mb-3 grid grid-cols-6 gap-1" aria-hidden="true">
+          {/* Sütun başlıkları bir kez, ve yapışkan: liste uzayınca hangi
+              kutunun ne olduğu ekrandan kayıyordu. Kutuların içinde değerin
+              kendisi yazılı olduğu için renk hiçbir zaman tek kanal değil. */}
+          <div
+            className="sticky top-[var(--h-baslik)] z-20 -mx-1 grid grid-cols-6 gap-1 bg-bg/90 px-1 py-2 backdrop-blur-sm"
+            aria-hidden="true"
+          >
             {ALANLAR.map((alan) => (
               <span
                 key={alan}
@@ -255,7 +246,7 @@ export default function KlasikBoard({ arabalar, numara }) {
 
           {/* En yeni tahmin üstte: hak sınırsız olduğu için liste büyüyor,
               oyuncu son satırı görmek için aşağı kaydırmak zorunda kalmasın. */}
-          <ul className="flex flex-col gap-4">
+          <ul className="mt-1 flex flex-col gap-4">
             {[...tahminler].reverse().map((tahmin, sira) => (
               <KlasikSatir
                 key={tahmin.slug}

@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { t } from "@/lib/i18n";
 import { PHOTOS } from "@/lib/photos";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
@@ -30,12 +28,8 @@ export default async function CreditsPage() {
   const rows = Object.entries(PHOTOS);
 
   return (
-    <main className="mx-auto w-full max-w-4xl px-6 py-14 sm:py-20">
-      <Link href="/" className="text-sm text-muted hover:text-ink">
-        {t("credits.back")}
-      </Link>
-
-      <h1 className="mt-10 text-3xl font-semibold tracking-tight sm:text-4xl">
+    <main className="mx-auto w-full max-w-4xl px-5 py-12 sm:px-6 sm:py-16">
+      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
         {t("credits.title")}
       </h1>
       <p className="mt-4 max-w-2xl text-muted">{t("credits.intro")}</p>

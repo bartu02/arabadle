@@ -1,7 +1,5 @@
-import Link from "next/link";
-
+import KlasikAraclar from "@/components/KlasikAraclar";
 import KlasikBoard from "@/components/KlasikBoard";
-import Wordmark from "@/components/Wordmark";
 import { bugununNumarasi } from "@/lib/klasik";
 import { tumArabalar } from "@/lib/klasik-sunucu";
 import { t } from "@/lib/i18n";
@@ -13,7 +11,7 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: `${t("modes.classic.title")} — ${t("app.title")}`,
+  title: t("modes.classic.title"),
   description: t("klasik.tagline"),
 };
 
@@ -36,16 +34,9 @@ export default async function KlasikPage() {
   const numara = bugununNumarasi();
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col px-6 py-14 sm:py-20">
-      <header className="mb-10">
-        <Link
-          href="/"
-          className="text-sm text-muted underline-offset-4 hover:text-ink hover:underline"
-        >
-          {t("klasik.back")}
-        </Link>
-
-        <div className="mt-5 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+    <main className="mx-auto w-full max-w-3xl px-5 py-10 sm:px-6 sm:py-14">
+      <header className="mb-8">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
           <h1 className="text-4xl font-extrabold tracking-[-0.03em] sm:text-5xl">
             {t("modes.classic.title")}
           </h1>
@@ -54,7 +45,13 @@ export default async function KlasikPage() {
           </p>
         </div>
 
-        <p className="mt-4 max-w-xl leading-snug text-muted">{t("klasik.tagline")}</p>
+        <p className="mt-3 max-w-xl leading-snug text-muted">{t("klasik.tagline")}</p>
+
+        {/* Kurallar ve istatistik: ikisi de bu türün standart mobilyası ve
+            ikisi de eksikti. Kurallar ilk ziyarette kendiliğinden açılıyor. */}
+        <div className="mt-5">
+          <KlasikAraclar />
+        </div>
       </header>
 
       {failed || arabalar.length === 0 ? (
@@ -71,15 +68,15 @@ export default async function KlasikPage() {
         </h2>
         <ul className="mt-4 flex flex-col gap-2 text-sm text-muted">
           <li className="flex items-center gap-3">
-            <span className="h-4 w-6 shrink-0 border border-hit bg-hit" aria-hidden="true" />
+            <span className="h-4 w-6 shrink-0 bg-hit" aria-hidden="true" />
             {t("klasik.legendHit")}
           </li>
           <li className="flex items-center gap-3">
-            <span className="h-4 w-6 shrink-0 border border-near bg-near" aria-hidden="true" />
+            <span className="h-4 w-6 shrink-0 bg-near" aria-hidden="true" />
             {t("klasik.legendNear")}
           </li>
           <li className="flex items-center gap-3">
-            <span className="h-4 w-6 shrink-0 border border-miss bg-miss" aria-hidden="true" />
+            <span className="h-4 w-6 shrink-0 bg-miss" aria-hidden="true" />
             {t("klasik.legendMiss")}
           </li>
           <li className="flex items-center gap-3">
@@ -90,10 +87,6 @@ export default async function KlasikPage() {
           </li>
         </ul>
       </section>
-
-      <footer className="mt-auto pt-16 text-sm font-bold text-muted">
-        <Wordmark compact />
-      </footer>
     </main>
   );
 }

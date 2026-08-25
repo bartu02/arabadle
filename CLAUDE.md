@@ -159,12 +159,14 @@ oylarını dolduracak.
 
 | rota | ne |
 |------|-----|
-| `/` | mod seçici |
+| `/` | mod seçici + gün şeridi |
 | `/al-sat-yak` | anketin paket listesi (eski ana sayfa) |
 | `/al-sat-yak/[packSlug]?tur=N` | oyun (eski `/oyna/[packSlug]`) |
 | `/fotograf` | yakında — yakın plandan tanı |
 | `/klasik` | Wordle'ın araba hali (aşağıda) |
 | `/sonuc/[sessionId]`, `/atif` | değişmedi |
+| `/opengraph-image`, `/klasik/opengraph-image` | paylaşım kartları |
+| `/manifest.webmanifest`, `/sitemap.xml`, `/robots.txt` | üretilen |
 
 **Marka üçe ayrıldı:**
 
@@ -183,9 +185,68 @@ oylarını dolduracak.
 - `components/AlSatYakMark.js` — üç etiket kendi renginde. Eskiden sitenin
   wordmark'ıydı; işlevi duruyor (kullanıcı renk kodunu oynamadan öğreniyor,
   SPEC 7) ama artık modun içinde.
-- `components/BrandBar.js` — üstteki 3px şerit artık `--color-brand`
-  (#3b82f6, koyu zeminde 5.41:1), wordmark'taki kareyle aynı mavi. Üç renk
-  siteye ait olmaktan çıktı.
+- Üstteki 3px şerit `--color-brand` (#3b82f6, koyu zeminde 5.41:1),
+  wordmark'taki kareyle aynı mavi. Üç renk siteye ait olmaktan çıktı.
+  Şerit eskiden ayrı bir `components/BrandBar.js` idi; yapışkan başlık
+  gelince onun üst kenarına taşındı ve dosya silindi (sabit konumlu şerit
+  yapışkan başlığın altından geçiyordu).
+
+**Simge değişti.** `app/icon.svg` Al, Sat, Yak'ın üç renkli çubuğuydu;
+o mod artık sitenin tamamı değil. Yerine `public/simge.svg`: dört kare —
+sol üst marka mavisi, diğer üçü Klasik'in kutu renkleri. Tek kopya,
+hem sekme ikonu (`layout.js` → `metadata.icons`) hem ana ekran ikonu
+(`app/manifest.js`) oraya bakıyor.
+
+### Site kabuğu
+
+Üç sayfa vardı, ortada site yoktu: her sayfa kendi "Bütün modlar" metin
+linkini yazıyordu ve Klasik'ten Al, Sat, Yak'a geçmenin tek yolu ana
+sayfaya dönmekti. Artık `app/layout.js` iki parça sarıyor:
+
+- `components/SiteHeader.js` — yapışkan, solda wordmark, sağda üç mod.
+  Etkin mod `usePathname` ile işaretleniyor (`/al-sat-yak/<paket>` de
+  anketi etkin sayıyor). İstemci bileşeni; alternatifi her sayfanın kendi
+  etkin anahtarını prop geçmesiydi, o da yeni sayfada unutulacak bir adım.
+- `components/SiteFooter.js` — wordmark + atıf linki. Atıf eskiden iki
+  sayfada vardı; CC BY / BY-SA fotoğrafın göründüğü her yerden
+  ulaşılabilir olmalı.
+- Başlıktan önce bir **atlama linki** var (`sr-only`, odakta görünür).
+
+`lib/modes.js` mod listesinin tek kaynağı (nav + ana sayfa kartları).
+Sıra bilinçli: **oynanabilir modlar önce.** Eskiden "Fotoğraf" (yakında)
+ilk karttı, yani gelen ilk gördüğü şey oynayamadığı bir kutuydu.
+
+**`--h-baslik: 59px`** (`globals.css`) = 3px şerit + 56px çubuk. İki yer
+buna bakıyor: Al, Sat, Yak oyun ekranı tam ekran olduğu için
+`md:h-[calc(100dvh-var(--h-baslik))]`, Klasik tahtasının yapışkan sütun
+başlıkları da tam buranın altına oturuyor. Başlığın yüksekliği
+değişirse tek yer.
+
+### Ana sayfa: menü değil, pano
+
+Eski hâli üç gri metin kutusuydu. 210 lisanslı araba fotoğrafı olan bir
+sitenin ön kapısı hiçbir araba göstermiyordu, üç oyun birbirinin aynısı
+görünüyordu ve 1440px'te sağ yarı bomboştu.
+
+**Her kart kendi mekaniğini gösteriyor** (`components/ModKarti.js`) —
+kullanıcı açıklamayı okumadan ne olduğunu anlıyor:
+
+| mod | kart |
+|-----|------|
+| Klasik | bir araba + altı renkli kutu şeridi |
+| Al, Sat, Yak | yan yana üç araba, üçünün altında kendi etiketi |
+| Fotoğraf | aynı fotoğrafın `scale-[2.8]` kırpımı + soru işareti |
+
+Fotoğraflar `lib/modes.js` → `cars` slug'larından, `lib/photos.js`
+üzerinden geliyor; slug bulunamazsa kart fotoğrafsız çiziliyor (içerik
+değişince ön kapı çökmesin).
+
+`components/GunSeridi.js` başlığın altında: bugünün bulmaca numarası,
+seri ve **yeni güne kalan süre**. Günlük oyunların "yarın gel" kancası bu
+ve geri sayım eskiden yalnızca Klasik'i kazandıktan sonra görünüyordu.
+`components/ModDurumu.js` Klasik kartına "bugün oynandı" rozetini
+koyuyor (localStorage). Al, Sat, Yak günlük bir bulmaca değil, orada
+gösterilecek bir "bugün" yok.
 
 **Statik sayfa + nonce'lı CSP = bozuk sayfa.** Yeni ana sayfa veri
 okumadığı için statik üretildi ve **16 CSP ihlali** verdi: statik HTML
@@ -348,6 +409,36 @@ RS4 B5'in yalnızca Avant olması, Patrol Y62'nin dizelinin olmaması...).
 RWD / Competition xDrive), Polestar 2 (üretim ikiye bölünmüş), RAV4 XA50
 (AWD-i / FWD hibrit). Kural uydurup kapatmak veriyi doğru yapmaz.
 
+**Nasıl oynanır + istatistik** (`components/KlasikAraclar.js`). İkisi de
+bu türün standart mobilyası ve ikisi de eksikti:
+
+- Kurallar sayfanın en altındaki lejantta duruyordu. İlk kez gelen boş
+  bir arama kutusu görüyor, bir araba yazıyor, kırmızı kutular alıyor ve
+  **sarının var olduğunu hiç öğrenmiyordu.** Pencere ilk ziyarette
+  kendiliğinden açılıyor (Wordle de böyle), sonra düğmeye kalıyor.
+  İçindeki örnek satır gerçek `KlasikSatir` ile çiziliyor.
+- İstatistik günlük oyunların geri gelme sebebi: oynanan, bulunan %,
+  seri, en iyi seri, tahmin dağılımı. Seri eskiden yalnızca kazanma
+  kartında ve yalnızca 1'den büyükse görünüyordu.
+
+`components/Modal.js` tarayıcının kendi `<dialog>`'unu kullanıyor: odak
+tuzağı, Esc, `aria-modal` ve arka planın erişilemez olması bedava geliyor
+(bağımlılık eklemeden). **`m-auto` şart** — tarayıcı `<dialog>`'u
+`margin: auto` ile ortalıyor, Tailwind preflight bütün marginleri
+sıfırlayınca pencere sol üste yapışıyor. Bir kez oldu.
+
+`lib/klasik-depo.js` tarayıcı hafızasının tek kaynağı (tahta, istatistik
+penceresi ve ana sayfa rozeti okuyor). İki incelik:
+
+- **"oynanan" sayacı ilk tahminde artıyor**, sayfa açılışında değil;
+  bakıp çıkan biri oyunu oynamış sayılmamalı. Bunun için ayrı bir
+  `sayilan` alanı var. İlk yazımda koşul `kayit.numara === numara` idi ve
+  sayaç hiç artmadı: tahtanın kayıt efekti sayfa açılır açılmaz
+  `numara`yı yazıyor, yani ilk tahmin geldiğinde alan çoktan bugüne
+  eşitti. Tarayıcı testi bunu yakaladı.
+- Tahtanın kayıt efekti `{ ...oku(), numara, tahminler, cevap }` yazıyor —
+  taze okumazsa istatistik alanlarını siler.
+
 **`0004_klasik.sql` çalıştırıldı** (2026-08-24, Supabase SQL Editor).
 Öncekilerden farkı: bu migration **zorunlu**. 0002 ve 0003 çalıştırılmazsa
 uygulama loga uyarı düşüp eski davranışa dönüyordu; burada sütunlar yoksa
@@ -396,9 +487,22 @@ diyor. Sistem fontu ve nötr griler tam o hissi veriyordu. Yapılanlar:
 
 **Testlerin tutunduğu kancalar.** Punto ya da düzen değişince seçici
 kırılmasın diye: `data-agreement`, `data-pack-title`, `data-pack-count`,
-`data-pack-desc`, `data-pack-index`, `data-category`, `data-category-note`.
+`data-pack-desc`, `data-pack-index`, `data-category`, `data-category-note`,
+`data-nav-mode`, `data-site-home`, `data-gun-seridi`, `data-mod-bitti`,
+`data-modal`, `data-nasil-ac`, `data-istatistik-ac`.
 Utility sınıfına (`text-7xl` gibi) göre seçici yazma — bir kez yazıldı ve
 düzen değişince test sessizce yanlış elemanı ölçmeye başladı.
+
+**Bir kanca tek şey demeli.** "Nasıl oynanır" penceresindeki örnek satır
+da `KlasikSatir` ile çiziliyor; ikisi de `data-tahmin` taşıyınca testlerin
+tahmin sayacı ikiye katlandı ve `[data-tahmin-ad]`'ın ilki tahtadaki değil
+penceredeki satır oldu. Bileşen artık `ornek` prop'u alıyor: örnek
+`data-ornek` taşıyor, `data-tahmin` yalnızca tahtadaki gerçek tahmin.
+
+**Tab sayısı sayma.** `a11y.mjs` "iki Tab sonra ilk kart", `hover-check.mjs`
+aynısını yazmıştı; site kabuğu tab sırasına dört eleman ekleyince beş
+kontrol birden kırıldı. İkisi de artık hedefe varana kadar Tab'lıyor
+(odağın hangi kartın içinde olduğuna bakarak).
 
 **Eşiği testlere gömme.** `votes-test.mjs` ve `result-test.mjs` 20'yi
 sabit yazmıştı; eşik 8'e inince "19 oy eşiğin altında" testi birden
@@ -676,6 +780,16 @@ Güvenlik tarafında dört paket daha:
 - `security/rls-sweep.mjs` — API'ye açık her tabloyu anon anahtarla okuma
   ve yazma için dener. Tablo listesini secret anahtarla alıyor, çünkü anon
   şemayı listeleyemiyor (ilk yazımda bu yüzden "0 tablo" dedi).
+- `uitest/klasik-kabuk.mjs` — site kabuğunu ve Klasik'in yeni mobilyasını
+  gerçek tarayıcıda dener: her sayfada nav + etkin mod, "nasıl oynanır"ın
+  ilk ziyarette açılıp ikincide açılmaması, pencerenin **ortalanmış**
+  olması, Esc, istatistiğin boştan doluya geçmesi (`oynanan` bir kez
+  artıyor mu), kazanınca seri/dağılım, ana sayfadaki "bugün oynandı".
+  **`addInitScript` ile localStorage'a yazarken birleştir**, düz `setItem`
+  her yüklemede kaydı eziyor — `klasik-oyna.mjs`'in "yenilemede oyun
+  duruyor mu" kontrolü bir kez bu yüzden sahte FAIL verdi.
+- `uitest/gozden-gecir.mjs` — bütün ekranları masaüstü + mobil çeker
+  (`uitest/gozden/` altına). Tasarım değişikliğinden sonra göze bakmak için.
 - `uitest/csp-check.mjs` — beş sayfayı gerçek Edge'de açar: CSP başlığı,
   nonce'ın her istekte değişmesi, script'lerin nonce taşıması, sıfır CSP
   ihlali, sayfanın gerçekten render olması. `playwright-core` yalnızca
