@@ -149,10 +149,10 @@ vermeden sonraki adıma geçme. **Bir adım bitince aşağıdaki tabloyu güncel
 - `/atif` sayfası CC BY / BY-SA'nın istediği atfı veriyor: her fotoğrafın
   sahibi, lisansı (linkli) ve kaynağı. Ana sayfanın altından linkli.
 
-### Site çok modlu: Plaka
+### Site çok modlu: Arabadle
 
-**Al, Sat, Yak artık site adı değil, bir oyun modu.** Site "Plaka" — günlük
-araba oyunları toplayan bir kabuk. Gerekçe: anketin ödülü kalabalığa bağlı,
+**Al, Sat, Yak artık site adı değil, bir oyun modu.** Site "Arabadle" —
+günlük araba oyunları toplayan bir kabuk. Gerekçe: anketin ödülü kalabalığa bağlı,
 yani sıfır trafikte hiçbir şey göstermiyor. Tahmin oyunları ise ilk günden
 tek oyuncuyla çalışıyor; günlük trafiği onlar getirecek, o trafik anketin
 oylarını dolduracak.
@@ -163,19 +163,29 @@ oylarını dolduracak.
 | `/al-sat-yak` | anketin paket listesi (eski ana sayfa) |
 | `/al-sat-yak/[packSlug]?tur=N` | oyun (eski `/oyna/[packSlug]`) |
 | `/fotograf` | yakında — yakın plandan tanı |
-| `/klasik` | yakında — özellik kutuları |
+| `/klasik` | Wordle'ın araba hali (aşağıda) |
 | `/sonuc/[sessionId]`, `/atif` | değişmedi |
 
 **Marka üçe ayrıldı:**
 
-- `components/Wordmark.js` — sitenin adı. Plaka referansı skeuomorfik bir
-  grafik değil, tek işaret: solda mavi "TR" bloğu. Site adı yalnızca burada
-  ve `tr.json`'da geçiyor.
+- `components/Wordmark.js` — sitenin adı: solda dolu mavi bir kare,
+  yanında ad. Site adı yalnızca burada ve `tr.json`'da geçiyor.
+
+  Kare Wordle'dan gelen bütün `-dle` oyunlarının ortak işareti; kullanıcı
+  ne tür bir site olduğunu addan önce anlıyor. Önceki hâlinde mavi bir
+  **"TR" bloğu** vardı ve site "Plaka" adını taşıdığı sürece o blok adın
+  görsel karşılığıydı; ad değişince plaka göndermesi anlamsız kaldı.
+
+  Kare **mavi**, ve bu tesadüf değil: hem Al, Sat, Yak hem Klasik
+  yeşil/sarı/kırmızı kullanıyor, yani o üç renk oyun anlamı taşıyor.
+  Marka onlardan biri olsaydı "doğru cevap" ya da "Al" ile karışırdı.
+  Mavi boşta olan tek renk.
 - `components/AlSatYakMark.js` — üç etiket kendi renginde. Eskiden sitenin
   wordmark'ıydı; işlevi duruyor (kullanıcı renk kodunu oynamadan öğreniyor,
   SPEC 7) ama artık modun içinde.
-- `components/BrandBar.js` — üstteki 3px şerit artık `--color-plate`
-  (#3b82f6, koyu zeminde 5.41:1). Üç renk siteye ait olmaktan çıktı.
+- `components/BrandBar.js` — üstteki 3px şerit artık `--color-brand`
+  (#3b82f6, koyu zeminde 5.41:1), wordmark'taki kareyle aynı mavi. Üç renk
+  siteye ait olmaktan çıktı.
 
 **Statik sayfa + nonce'lı CSP = bozuk sayfa.** Yeni ana sayfa veri
 okumadığı için statik üretildi ve **16 CSP ihlali** verdi: statik HTML

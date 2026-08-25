@@ -1,24 +1,31 @@
 import { t } from "@/lib/i18n";
 
 /**
- * Sitenin adı. Plaka referansı skeuomorfik bir grafik değil, tek bir
- * işaret: solda mavi blok, yanında ad. Türk plakasının silueti bu kadarla
- * tanınıyor ve SPEC 7'nin "dekoratif öğe yok" kuralını zorlamıyor.
+ * Sitenin adı.
+ *
+ * Önceki hâlinde solda mavi bir "TR" bloğu vardı; site "Plaka" adını
+ * taşıdığı sürece o blok adın görsel karşılığıydı. Ad "Arabadle" olunca
+ * plaka göndermesi anlamını yitirdi ve geriye açıklanamayan bir grafik
+ * kalırdı. Yerine dolu bir kare kondu: Wordle'dan gelen bütün `-dle`
+ * oyunlarının ortak işareti bu, yani kullanıcı ne tür bir site olduğunu
+ * addan önce anlıyor.
+ *
+ * Kare **mavi** kalıyor. Yeşil ilk akla gelen olurdu ama hem Al, Sat, Yak
+ * hem Klasik yeşil/sarı/kırmızı kullanıyor; marka yeşili o üçlüyle
+ * karışırdı. Mavi, oyun anlamı taşımayan tek renk.
  *
  * Site adı yalnızca burada ve tr.json'da geçiyor; değiştirmek iki yer.
  */
 export default function Wordmark({ compact = false }) {
   return (
-    <span className="inline-flex items-stretch">
+    <span className="inline-flex items-center">
       <span
         aria-hidden="true"
-        className={`flex items-center bg-plate text-bg ${
-          compact ? "px-1 text-[0.5em]" : "px-1.5 text-[0.42em]"
-        } font-bold leading-none tracking-normal`}
-      >
-        TR
-      </span>
-      <span className="pl-[0.18em]">{t("app.title")}</span>
+        className={`inline-block shrink-0 bg-brand ${
+          compact ? "size-[0.72em]" : "size-[0.62em]"
+        }`}
+      />
+      <span className="pl-[0.26em]">{t("app.title")}</span>
     </span>
   );
 }

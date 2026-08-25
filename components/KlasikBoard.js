@@ -19,7 +19,7 @@ import { t } from "@/lib/i18n";
  * kaldırılamaz.
  */
 
-const DEPO = "plaka-klasik-v1";
+const DEPO = "arabadle-klasik-v1";
 
 /** localStorage her yerde çalışmıyor (gizli sekme, kapalı site verisi). */
 function depodanOku() {

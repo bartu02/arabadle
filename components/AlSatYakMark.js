@@ -4,7 +4,7 @@ import { t } from "@/lib/i18n";
 /**
  * Al, Sat, Yak modunun kendi işareti.
  *
- * Eskiden bu sitenin wordmark'ıydı. Site artık Plaka, anket bir mod — ama
+ * Eskiden bu sitenin wordmark'ıydı. Site artık Arabadle, anket bir mod — ama
  * üç etiketi kendi renginde yazmanın işlevi duruyor: kullanıcı oyunun renk
  * kodunu daha oynamadan öğreniyor (SPEC 7: "kartı okumadan renkten
  * anlamalı"). O yüzden silinmedi, modun içine taşındı.

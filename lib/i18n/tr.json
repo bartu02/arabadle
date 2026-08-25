@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Plaka",
+    "title": "Arabadle",
     "tagline": "Her gün bir araba oyunu.",
     "description": "Arabaları tanı, kalabalıkla karşılaş. Her gün yeni."
   },
@@ -125,7 +125,7 @@
     "streak": "Seri {n}",
     "share": "Sonucu kopyala",
     "shared": "Kopyalandı",
-    "shareTitle": "Plaka · Klasik #{n}",
+    "shareTitle": "Arabadle · Klasik #{n}",
     "legendTitle": "Kutular",
     "legendHit": "Tam tutuyor",
     "legendNear": "Yakın: marka aynı gruptan, yakıt akraba ya da yıl üç yıl içinde",

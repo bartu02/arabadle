@@ -3,9 +3,9 @@
  * bir işarete bağlıyor.
  *
  * Eskiden Al/Sat/Yak'ın üç rengiydi. Anket bir mod haline gelince o üç renk
- * siteye ait olmaktan çıktı — şerit artık plakanın mavisi, yani sitenin
- * kendi rengi. Üç renkli işaret Al, Sat, Yak modunun içinde yaşıyor.
+ * siteye ait olmaktan çıktı — şerit artık sitenin kendi rengi, wordmark'taki
+ * kareyle aynı mavi. Üç renkli işaret Al, Sat, Yak modunun içinde yaşıyor.
  */
 export default function BrandBar() {
-  return <div aria-hidden="true" className="fixed inset-x-0 top-0 z-50 h-[3px] bg-plate" />;
+  return <div aria-hidden="true" className="fixed inset-x-0 top-0 z-50 h-[3px] bg-brand" />;
 }
