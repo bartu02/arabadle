@@ -37,6 +37,7 @@ export default function ArabaSecici({ arabalar, denenenler, onSec, kapali }) {
   const [acik, setAcik] = useState(false);
   const [vurgu, setVurgu] = useState(0);
   const sarmalayici = useRef(null);
+  const listeRef = useRef(null);
   const listeId = useId();
 
   const dizin = useMemo(
@@ -44,17 +45,35 @@ export default function ArabaSecici({ arabalar, denenenler, onSec, kapali }) {
     [arabalar]
   );
 
+  /**
+   * Kutu boşken gösterilen liste: 210 arabanın tamamı, ada göre sıralı.
+   *
+   * Sunucu `slug`'a göre sıralı gönderiyor ve o çoğu zaman markayla
+   * başlıyor ama hep değil ("vw-golf-8-gti" → Volkswagen, "tofas-sahin" →
+   * Tofaş). Gezilecek liste ekranda yazan ada göre sıralı olmalı.
+   */
+  const tumListe = useMemo(
+    () => [...dizin].sort((a, b) => a.ad.localeCompare(b.ad, "tr")),
+    [dizin]
+  );
+
   const sonuclar = useMemo(() => {
     const q = sadelestir(metin.trim());
-    if (q === "") return [];
+    // Boşken kesme yok: liste kaydırılabilir, oyuncu havuzu gezebiliyor.
+    // Kesme yalnızca yazarken var, orada amaç en iyi eşleşmeleri göstermek.
+    if (q === "") return tumListe;
     const bulunan = dizin.filter((a) => a.arama.includes(q));
     // Baştan eşleşenler önce: "golf" yazınca Golf GTI, "Citroën"in içindeki
     // tesadüfi eşleşmeden önce gelsin.
     bulunan.sort((a, b) => a.arama.indexOf(q) - b.arama.indexOf(q));
     return bulunan.slice(0, EN_FAZLA);
-  }, [dizin, metin]);
+  }, [dizin, metin, tumListe]);
 
-  useEffect(() => setVurgu(0), [metin]);
+  // Yazarken ilk sonuç ön seçili (Enter'la hemen tahmin edilsin diye), ama
+  // kutu BOŞKEN hiçbir satır seçili değil: liste artık odaklanınca da
+  // açıldığı için, ön seçim olsaydı kazara basılan Enter listenin başındaki
+  // arabayı tahmin ederdi.
+  useEffect(() => setVurgu(metin.trim() === "" ? -1 : 0), [metin]);
 
   // Dışarı tıklayınca liste kapansın.
   useEffect(() => {
@@ -87,14 +106,28 @@ export default function ArabaSecici({ arabalar, denenenler, onSec, kapali }) {
     } else if (olay.key === "ArrowUp") {
       olay.preventDefault();
       setAcik(true);
-      setVurgu((v) => (v - 1 + sonuclar.length) % sonuclar.length);
+      // Hiçbir şey seçili değilken (vurgu -1) yukarı ok sonuncuya gitmeli.
+      setVurgu((v) => (v < 0 ? sonuclar.length - 1 : (v - 1 + sonuclar.length) % sonuclar.length));
     } else if (olay.key === "Enter") {
       olay.preventDefault();
       sec(sonuclar[vurgu]);
     }
   }
 
-  const listeAcik = acik && metin.trim() !== "";
+  // Liste odaklanır odaklanmaz açılıyor, yazmak şart değil: kutu boşken de
+  // seçilecek bir şey olduğu görünsün. Önceden boş kutu hiçbir şey
+  // göstermiyordu ve serbest metin kabul edilmediği için oyuncu ne
+  // yazacağını bilmiyordu.
+  const listeAcik = acik;
+
+  // Uzun listede ok tuşuyla gezerken vurgulanan satır görünür kalmalı.
+  // Sekiz sonuçla gerek yoktu, 210 satırla var.
+  useEffect(() => {
+    if (!listeAcik) return;
+    // "Eşleşen araba yok" satırı yalnızca sonuç yokken çiziliyor, o durumda
+    // da ok tuşları devre dışı — yani indeks kayması olmuyor.
+    listeRef.current?.children[vurgu]?.scrollIntoView({ block: "nearest" });
+  }, [vurgu, listeAcik]);
 
   return (
     <div ref={sarmalayici} className="relative">
@@ -107,6 +140,9 @@ export default function ArabaSecici({ arabalar, denenenler, onSec, kapali }) {
           setAcik(true);
         }}
         onFocus={() => setAcik(true)}
+        // Esc ile kapattıktan sonra kutu hâlâ odakta kalıyor; ikinci
+        // tıklamada onFocus tetiklenmediği için liste açılmıyordu.
+        onClick={() => setAcik(true)}
         onKeyDown={tusla}
         placeholder={t("klasik.placeholder")}
         autoComplete="off"
@@ -123,6 +159,7 @@ export default function ArabaSecici({ arabalar, denenenler, onSec, kapali }) {
 
       {listeAcik && (
         <ul
+          ref={listeRef}
           id={listeId}
           role="listbox"
           className="absolute left-0 right-0 top-full z-10 mt-1 max-h-72 overflow-y-auto border border-line bg-raised"

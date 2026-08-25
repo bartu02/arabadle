@@ -421,6 +421,20 @@ bu türün standart mobilyası ve ikisi de eksikti:
   seri, en iyi seri, tahmin dağılımı. Seri eskiden yalnızca kazanma
   kartında ve yalnızca 1'den büyükse görünüyordu.
 
+**Araba seçici kutuya basınca açılıyor** (`components/ArabaSecici.js`).
+Önceden boş kutu hiçbir şey göstermiyordu; serbest metin kabul edilmediği
+için oyuncu ne yazacağını bilmiyordu. Boşken **210 arabanın tamamı** ada
+göre sıralı listeleniyor (`localeCompare(tr)` — sunucu `slug`'a göre
+sıralı gönderiyor ve o hep adla başlamıyor: `vw-golf-8-gti`,
+`tofas-sahin`). Kesme yalnızca yazarken var (8 sonuç), orada amaç en iyi
+eşleşme.
+
+İki incelik: kutu boşken **hiçbir satır ön seçili değil** (`vurgu = -1`),
+yoksa liste odakla açıldığı için kazara basılan Enter listenin başındaki
+arabayı tahmin ederdi; ve ok tuşuyla gezerken vurgulanan satır
+`scrollIntoView({ block: "nearest" })` ile görünür tutuluyor — sekiz
+sonuçla gerekmiyordu, 210 satırla gerekiyor.
+
 `components/Modal.js` tarayıcının kendi `<dialog>`'unu kullanıyor: odak
 tuzağı, Esc, `aria-modal` ve arka planın erişilemez olması bedava geliyor
 (bağımlılık eklemeden). **`m-auto` şart** — tarayıcı `<dialog>`'u
@@ -788,6 +802,11 @@ Güvenlik tarafında dört paket daha:
   **`addInitScript` ile localStorage'a yazarken birleştir**, düz `setItem`
   her yüklemede kaydı eziyor — `klasik-oyna.mjs`'in "yenilemede oyun
   duruyor mu" kontrolü bir kez bu yüzden sahte FAIL verdi.
+- `uitest/secici.mjs` — araba seçici: boş kutuya tıklayınca listenin
+  açılması, sıranın ada göre olması, **kazara Enter'ın tahmin
+  göndermemesi**, ok tuşları, filtreleme, denenen arabanın pasif kalması,
+  dışarı tıklayınca kapanma, mobilde taşmama. Liste uzunluğunu
+  `seed/ozellikler.json`'dan türetiyor — sabit sayı yazılmıyor.
 - `uitest/gozden-gecir.mjs` — bütün ekranları masaüstü + mobil çeker
   (`uitest/gozden/` altına). Tasarım değişikliğinden sonra göze bakmak için.
 - `uitest/csp-check.mjs` — beş sayfayı gerçek Edge'de açar: CSP başlığı,
