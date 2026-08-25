@@ -162,7 +162,12 @@ export default function ArabaSecici({ arabalar, denenenler, onSec, kapali }) {
           ref={listeRef}
           id={listeId}
           role="listbox"
-          className="absolute left-0 right-0 top-full z-10 mt-1 max-h-72 overflow-y-auto border border-line bg-raised"
+          // Katman sırası: site başlığı 40 > bu liste 30 > tahtanın yapışkan
+          // sütun başlıkları 20. Liste z-10'dayken sütun başlıkları
+          // ("MARKA ÜLKE KASA...") listenin üstüne biniyor ve ikinci öneriyi
+          // örtüyordu; ikisi aynı yığın bağlamında olduğu için z-index'ler
+          // doğrudan yarışıyor.
+          className="absolute left-0 right-0 top-full z-30 mt-1 max-h-72 overflow-y-auto border border-line bg-raised"
         >
           {sonuclar.length === 0 && (
             <li className="px-4 py-3 text-sm text-muted">{t("klasik.noMatch")}</li>

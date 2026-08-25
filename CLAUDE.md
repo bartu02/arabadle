@@ -479,6 +479,12 @@ sıralı gönderiyor ve o hep adla başlamıyor: `vw-golf-8-gti`,
 `tofas-sahin`). Kesme yalnızca yazarken var (8 sonuç), orada amaç en iyi
 eşleşme.
 
+**Katman sırası: site başlığı 40 > açılır liste 30 > tahtanın yapışkan
+sütun başlıkları 20.** Liste z-10'dayken sütun şeridi ("MARKA ÜLKE
+KASA...") listenin üstüne biniyor ve ikinci öneriyi örtüyordu; ikisi aynı
+yığın bağlamında olduğu için z-index'ler doğrudan yarışıyor
+(`position: relative` + `z-index: auto` yeni bağlam açmıyor).
+
 İki incelik: kutu boşken **hiçbir satır ön seçili değil** (`vurgu = -1`),
 yoksa liste odakla açıldığı için kazara basılan Enter listenin başındaki
 arabayı tahmin ederdi; ve ok tuşuyla gezerken vurgulanan satır
