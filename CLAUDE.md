@@ -159,13 +159,13 @@ oylarını dolduracak.
 
 | rota | ne |
 |------|-----|
-| `/` | mod seçici + gün şeridi |
-| `/al-sat-yak` | anketin paket listesi (eski ana sayfa) |
+| `/` | **Klasik oyunun kendisi** + gün şeridi + diğer modların kartları |
+| `/klasik` | `/`'e kalıcı yönlendirme (308, next.config.mjs) |
+| `/al-sat-yak` | anketin paket listesi |
 | `/al-sat-yak/[packSlug]?tur=N` | oyun (eski `/oyna/[packSlug]`) |
 | `/fotograf` | yakında — yakın plandan tanı |
-| `/klasik` | Wordle'ın araba hali (aşağıda) |
 | `/sonuc/[sessionId]`, `/atif` | değişmedi |
-| `/opengraph-image`, `/klasik/opengraph-image` | paylaşım kartları |
+| `/opengraph-image`, `/al-sat-yak/opengraph-image` | paylaşım kartları |
 | `/manifest.webmanifest`, `/sitemap.xml`, `/robots.txt` | üretilen |
 
 **Marka üçe ayrıldı:**
@@ -272,7 +272,40 @@ buna bakıyor: Al, Sat, Yak oyun ekranı tam ekran olduğu için
 başlıkları da tam buranın altına oturuyor. Başlığın yüksekliği
 değişirse tek yer.
 
-### Ana sayfa: menü değil, pano
+### Kök adres oyunun kendisi
+
+Bir süre `/` bir **mod seçiciydi** ve Klasik `/klasik`'te duruyordu: siteye
+gelen önce menü görüyor, oynamak için bir tık daha atıyordu. Oysa sitenin
+adı Arabadle ve o ad Klasik'i anlatıyor — Wordle, LoLdle, Framed, Globle,
+hepsinde kök adres oyunun kendisi.
+
+`/klasik` artık **308 ile** `/`'e gidiyor (`next.config.mjs` → `redirects`).
+Kalıcı seçildi ki arama motoru tek adres görsün; bedeli, geri almak
+gerekirse tarayıcı önbelleğinin sert tutması. Site yeniyken en ucuz an.
+
+Bunun sürüklediği değişiklikler — rota taşırken hepsine bak:
+
+- `lib/modes.js` → classic `href: "/"`, `lib/yapisal-veri.js` → aynı
+- Paylaşım metnindeki link (`KlasikBoard` → `paylas`)
+- Site haritasından `/klasik` düştü, yerine yönlendirme kontrolü geldi
+- `app/klasik/opengraph-image.js` → `app/opengraph-image.js` (kart artık
+  bulmaca numarasını taşıyor, o yüzden `force-dynamic`)
+- `components/ModDurumu.js` **silindi**: "bugün oynandı" rozeti Klasik
+  kartındaydı, o kart ana sayfadan kalkınca çağıranı kalmadı. Oynanmış
+  oyunda kazanma kartı zaten ekranda duruyor.
+
+Mod seçici kaybolmadı: üst nav üç modu her sayfada taşıyor ve diğer iki
+mod bu sayfanın altında kartlarıyla duruyor. Oyuncu önce oynuyor, sonra
+keşfediyor.
+
+**Günlük oyunda tahminin SONUCU da cevaba bağlı.** `klasik-oyna.mjs`
+"satırda hem tutan hem tutmayan kutu var" diye bir kontrol taşıyordu;
+cevabın Hyundai Accent Era olduğu gün Tofaş Şahin tahmini altı kutuda da
+kırmızı verdi — doğru davranış, sahte FAIL. Kontrol "altı kutunun da
+geçerli bir durumu var"a çevrildi; tutan yol zaten doğru tahminle
+(altı kutu yeşil) test ediliyor.
+
+### Ana sayfa kartları: menü değil, pano
 
 Eski hâli üç gri metin kutusuydu. 210 lisanslı araba fotoğrafı olan bir
 sitenin ön kapısı hiçbir araba göstermiyordu, üç oyun birbirinin aynısı
@@ -294,9 +327,9 @@ değişince ön kapı çökmesin).
 `components/GunSeridi.js` başlığın altında: bugünün bulmaca numarası,
 seri ve **yeni güne kalan süre**. Günlük oyunların "yarın gel" kancası bu
 ve geri sayım eskiden yalnızca Klasik'i kazandıktan sonra görünüyordu.
-`components/ModDurumu.js` Klasik kartına "bugün oynandı" rozetini
-koyuyor (localStorage). Al, Sat, Yak günlük bir bulmaca değil, orada
-gösterilecek bir "bugün" yok.
+Kartlar artık yalnızca Al, Sat, Yak ve Fotoğraf için çiziliyor: Klasik
+sayfanın kendisi. Al, Sat, Yak günlük bir bulmaca değil, orada
+gösterilecek bir "bugün" de yok.
 
 **Statik sayfa + nonce'lı CSP = bozuk sayfa.** Yeni ana sayfa veri
 okumadığı için statik üretildi ve **16 CSP ihlali** verdi: statik HTML

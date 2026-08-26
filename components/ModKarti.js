@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import ModDurumu from "./ModDurumu";
 import { PHOTOS } from "@/lib/photos";
 import { t } from "@/lib/i18n";
 
@@ -130,7 +129,7 @@ function Gorsel({ mode }) {
   return <FotografGorsel slug={mode.cars[0]} />;
 }
 
-export default function ModKarti({ mode, index, numara }) {
+export default function ModKarti({ mode, index }) {
   const hazir = Boolean(mode.href);
 
   const govde = (
@@ -166,7 +165,6 @@ export default function ModKarti({ mode, index, numara }) {
               {t("modes.soon")}
             </span>
           )}
-          {mode.key === "classic" && <ModDurumu numara={numara} />}
         </div>
       </div>
     </>

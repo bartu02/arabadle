@@ -42,6 +42,18 @@ const securityHeaders = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  /**
+   * Klasik eskiden /klasik idi, artik kok adres.
+   *
+   * Kalici (308): arama motoru tek adres gorsun ve paylasilmis eski
+   * linkler calismaya devam etsin. Kalici yonlendirme tarayicida sert
+   * onbellege aliniyor — geri almak gerekirse tarayici onbellegi
+   * temizlenmeli. Site yeni ve /klasik hicbir yerde indekslenmedigi
+   * icin bedeli simdi en dusuk.
+   */
+  async redirects() {
+    return [{ source: "/klasik", destination: "/", permanent: true }];
+  },
   // "X-Powered-By: Next.js" başlığı kimseye fayda sağlamıyor, sadece
   // hangi sürümün açıklarını deneyeceğini söylüyor.
   poweredByHeader: false,

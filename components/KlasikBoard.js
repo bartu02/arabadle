@@ -138,7 +138,7 @@ export default function KlasikBoard({ arabalar, numara }) {
       "",
       ...satirlar,
       "",
-      window.location.origin + "/klasik",
+      window.location.origin + "/",
     ].join("\n");
 
     if (paylasilabilir) {

@@ -19,7 +19,6 @@ export default async function sitemap() {
 
   const sabit = [
     { url: `${kok}/`, lastModified: bugun, changeFrequency: "daily", priority: 1 },
-    { url: `${kok}/klasik`, lastModified: bugun, changeFrequency: "daily", priority: 0.9 },
     { url: `${kok}/al-sat-yak`, lastModified: bugun, changeFrequency: "weekly", priority: 0.8 },
     { url: `${kok}/atif`, lastModified: bugun, changeFrequency: "monthly", priority: 0.3 },
   ];
