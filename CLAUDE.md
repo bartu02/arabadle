@@ -886,6 +886,18 @@ tabloyu `votes-live.json`'a yazar, `... restore` geri koyar. Yedek dosyası
 tek koşuya ait olduğu için `votes-backup.jsonl`'ı elle ayıklamaktan kolay.
 Sıra: `save` → testler → `restore` → `show` ile satır sayısını doğrula.
 
+**`restore` atlanırsa bir sonraki `save` yedeği siler.** Bir kez oldu:
+oy silen paketler (`ui-test`, `payoff`, `result-ui`, `highlight-ui`,
+`design-check`) koşturuldu, `restore` unutuldu, sonra boş tabloya karşı
+`save` çalıştırıldı ve `votes-live.json` sıfırlandı. 66 gerçek oy
+`votes-backup.jsonl`'dan kurtarıldı (append-only, hiçbir şey kaybolmuyor)
+— `scratchpad/kurtar-gercek-oylar.mjs` altı gerçek oturumu ayıklıyor,
+tekrarları (session_id, trio_id, item_id) üçlüsüyle teklileştiriyor ve
+66/66 çıkınca yazıyor.
+
+İki kural: **`save`'i boş olabilecek bir tabloya karşı çalıştırma**, ve
+test turunun sonunda `restore` + `show` yapmadan başka işe geçme.
+
 26 paket:
 saf mantık, yüzde, öne çıkan kurallar, sonuç hesabı, `/api/oy`, ve gerçek
 Edge'de oyun akışı / öne çıkan satır / sonuç+OG / ilk oyuncu / düzen-klavye-a11y
