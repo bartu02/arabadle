@@ -114,6 +114,12 @@ function validate(packs, items, trios, ozellikler) {
     if (!Number.isInteger(o.year_start)) {
       fail(`ozellikler.json: "${o.slug}" year_start tam sayı değil.`);
     }
+    // Beygir: SQL kısıtıyla aynı aralık (0005_beygir.sql). Amaç sıfır ya da
+    // altı haneli bir yazım hatasını durdurmak, gerçek bir arabayı
+    // reddetmek değil.
+    if (!Number.isInteger(o.power) || o.power < 40 || o.power > 1200) {
+      fail(`ozellikler.json: "${o.slug}" power geçersiz (${o.power}).`);
+    }
     for (const alan of ["brand", "country", "brand_group"]) {
       if (!o[alan]) fail(`ozellikler.json: "${o.slug}" ${alan} boş.`);
     }
@@ -197,7 +203,7 @@ async function main() {
   // ekleniyor; note alanı gerekçe metni, veritabanına yazılmıyor.
   const ozellik = new Map(ozellikler.map((o) => [o.slug, o]));
   const itemRows = items.map(({ slug, name, year_label }) => {
-    const { brand, country, brand_group, year_start, body, fuel, drivetrain } =
+    const { brand, country, brand_group, year_start, body, fuel, drivetrain, power } =
       ozellik.get(slug);
     return {
       slug,
@@ -212,6 +218,7 @@ async function main() {
       body,
       fuel,
       drivetrain,
+      power,
     };
   });
 

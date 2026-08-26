@@ -28,7 +28,8 @@ import { t } from "@/lib/i18n";
  *
  * Gerçek `KlasikSatir` bileşeniyle çiziliyor, ekrandakiyle birebir aynı
  * görünsün diye. Değerler uydurma ama tutarlı: marka ve ülke tutuyor,
- * yakıt benzin↔hibrit yakınlığından sarı, yıl üç yıl içinde ve ok yukarı.
+ * yakıt benzin↔hibrit yakınlığından sarı, beygir ve yıl yakın bantta ve
+ * iki ok da yukarı.
  */
 const ORNEK = {
   slug: "ornek",
@@ -39,6 +40,7 @@ const ORNEK = {
     body: { durum: "miss", deger: "sedan" },
     fuel: { durum: "near", deger: "petrol" },
     drivetrain: { durum: "miss", deger: "fwd" },
+    power: { durum: "near", deger: 152, yon: "yukari" },
     year: { durum: "near", deger: 2018, yon: "yukari" },
   },
 };

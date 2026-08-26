@@ -21,7 +21,7 @@ import { t } from "@/lib/i18n";
  */
 
 /** Klasik kartındaki örnek kutu dizisi. Gerçek bir tahmin gibi karışık. */
-const ORNEK_KUTULAR = ["miss", "hit", "miss", "near", "miss", "hit"];
+const ORNEK_KUTULAR = ["miss", "hit", "miss", "near", "miss", "near", "hit"];
 const KUTU_RENGI = { hit: "bg-hit", near: "bg-near", miss: "bg-miss" };
 
 /** Al, Sat, Yak kartındaki üç etiket, kendi renginde. */
@@ -51,7 +51,7 @@ function KlasikGorsel({ slug }) {
       {/* Kutu şeridi fotoğrafın üstünde: altına konsaydı kartın gövdesiyle
           karışır, oyunun işareti olmaktan çıkardı. */}
       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-bg via-bg/80 to-transparent p-2.5 pt-8">
-        <div className="grid grid-cols-6 gap-1">
+        <div className="grid grid-cols-7 gap-1">
           {ORNEK_KUTULAR.map((durum, i) => (
             <span key={i} className={`h-5 ${KUTU_RENGI[durum]}`} />
           ))}

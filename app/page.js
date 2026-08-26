@@ -117,6 +117,12 @@ export default async function HomePage() {
             </span>
             {t("klasik.legendYear")}
           </li>
+          <li className="flex items-center gap-3">
+            <span className="w-6 shrink-0 text-center text-xs font-bold text-muted" aria-hidden="true">
+              PS
+            </span>
+            {t("klasik.legendPower")}
+          </li>
         </ul>
       </section>
 

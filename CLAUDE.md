@@ -414,7 +414,44 @@ takılırdı. Tek seçimle iki nesil çıkış yılı karşılaştırılıyor, e
 | Kasa | aynı | — |
 | Yakıt | aynı | benzin ↔ hibrit |
 | Çekiş | aynı | — |
+| Beygir | ±%10 | ±%25, ayrıca ok |
 | Yıl | ±1 | ±3, ayrıca ok |
+
+**Beygir yüzde bantla ölçülüyor, mutlak farkla değil.** 20 PS, 86 PS'lik
+bir Şahin ile 830 PS'lik bir Ferrari için aynı şey değil; tek bir mutlak
+eşik iki uçta da yanlış olurdu. Oran büyük olana bölünüyor ki simetrik
+olsun.
+
+Bant, yıl bandıyla **aynı ölçütle** seçildi (rastgele iki arabanın yeşil
+olma ihtimali): ±%5 → %6.4, **±%10 → %12.7**, ±%15 → %18.3. Yıl alanı
+%13.2 veriyor, en yakını ±%10.
+
+Yan fayda: yüzde bant, verideki belirsizliği yutuyor. 210 arabanın
+32'sinde "TR'de hangi motor yaygın" tartışılır (`scratchpad/tahmin/beygir.mjs`
+→ `g` alanı: 61 kesin, 117 yaygın sürüm açık, 32 tartışılır) ve 10-15
+PS'lik bir hata rengi çoğu zaman değiştirmiyor.
+
+**Beygir eklemek ölçülerek karara bağlandı** (`scratchpad/tahmin/alan-degeri.mjs`).
+Önce şu görüldü: oyun zaten zor değildi — bir tahminden sonra 18.3 aday
+kalıyor, ortalama 3.44 tahminde bitiyordu. Yani yedinci kutu bir sorunu
+çözmüyor, oyunu **kolaylaştırıyor**. Yine de eklendi, çünkü getirisi
+tipik bir alanın çok üstünde:
+
+| | önce (6 alan) | sonra (7 alan) |
+|---|---|---|
+| bir tahminden sonra kalan aday | 18.3 | **9.8** |
+| ortalama tahmin | 3.44 | **2.90** |
+| en kötü durum | 15 | **4** |
+| ayırt edilemeyen çift | 3 | **1** |
+
+Beygir, yıldan sonra en değerli ikinci alan (çıkarılırsa 8.5 aday
+kaybediliyor; tipik alan 0.9-4.2). Ayrıca ikiz çiftlerin ikisini ayırdı:
+911 (992) 385 PS ile Cayman GT4 420 PS, Focus mk4 ile Fiesta ST. Geriye
+tek çift kaldı: **Mercedes 500E (W124) ve S-Serisi (W140)** — ikisi de
+aynı M119 V8, 326 PS. Onlar gerçekten aynı.
+
+Bedeli açık: ortalama 2.90 tahmin, Wordle'ın ~4'ünün altında. İleride
+zorlaştırmak gerekirse bantları daraltmak (±%10 → ±%5) en ucuz kol.
 
 **Yıl ±1, ±2 değil.** CarSpotr ve Poeltl ±2 kullanıyor ama havuzumuz modern
 tarafa yığılmış (210 arabanın 122'si 2015 sonrası). Ölçüldü: ±2'de rastgele
@@ -542,6 +579,19 @@ penceresi ve ana sayfa rozeti okuyor). İki incelik:
 - Tahtanın kayıt efekti `{ ...oku(), numara, tahminler, cevap }` yazıyor —
   taze okumazsa istatistik alanlarını siler.
 
+**`0005_beygir.sql` — `items.power` sütunu.** 0004 gibi **zorunlu**: sütun
+yoksa `klasik-sunucu.js`'in sorgusu `column items.power does not exist`
+ile düşüyor ve artık **ana sayfa** "Klasik şu an açılmıyor" gösteriyor
+(eskiden yalnızca `/klasik` bozulurdu, şimdi ön kapı).
+
+Sıra önemli ve **geriye dönük uyumlu**: SQL Editor'de 0005 → `npm run seed`
+→ sonra kodu deploy et. İlk iki adım null geçilebilir bir sütun ekleyip
+dolduruyor, o sırada canlıdaki eski (altı kutulu) sürüm etkilenmiyor.
+Ters sırada yaparsan site sütun gelene kadar kapalı kalır.
+
+Değer **PS** (metrik beygir): Türkiye "beygir gücü" diyor ve ruhsatta PS
+yazıyor. kW ya da SAE hp değil.
+
 **`0004_klasik.sql` çalıştırıldı** (2026-08-24, Supabase SQL Editor).
 Öncekilerden farkı: bu migration **zorunlu**. 0002 ve 0003 çalıştırılmazsa
 uygulama loga uyarı düşüp eski davranışa dönüyordu; burada sütunlar yoksa
@@ -614,6 +664,10 @@ eşiğin *üstünü* ölçmeye başladı. İkisi de artık
 `firstplayer.mjs` "Henüz yeterli oy yok" metnini arıyordu — metin
 değişince kırıldılar. Artık SPEC'in asıl kuralına bakıyorlar
 (kartta yüzde işareti yok) ve beklenen metni `tr.json`'dan okuyorlar.
+
+**Kutu sayısını da testlere gömme.** `klasik-test.mjs` paylaşım ızgarası
+kontrolünde `"🟩🟩🟩🟩🟩🟩"` yazıyordu; yedinci kutu gelince kırıldı.
+Artık `"🟩".repeat(ALANLAR.length)`.
 
 **Testlere içerik sayısı gömme.** "5 paket listeleniyor", "Tur 1 / 10" gibi
 sabitler içerik büyüyünce kırıldı. Hepsi veritabanından okunan gerçek sayıyla
@@ -891,6 +945,15 @@ Güvenlik tarafında dört paket daha:
   **`addInitScript` ile localStorage'a yazarken birleştir**, düz `setItem`
   her yüklemede kaydı eziyor — `klasik-oyna.mjs`'in "yenilemede oyun
   duruyor mu" kontrolü bir kez bu yüzden sahte FAIL verdi.
+- `tahmin/beygir.mjs` + `tahmin/beygir-dogrula.mjs` — 210 arabanın beygir
+  verisi ve dört geçişlik denetimi (kapsam, biçim, mantık kuralları, bant
+  seçimi). Mantık geçişi tek tek rakamı doğrulayamıyor ama "80'lerde 700
+  PS", "pickup 500 PS", "performans modeli 100 PS" gibi hataları
+  yakalıyor. Performans eşiği **çağa duyarlı**: Mk2 Golf GTI gerçekten
+  112 PS (8v) ve sabit 130 eşiği ona yanlış alarm verdi.
+- `tahmin/alan-degeri.mjs` — bir alanın oyuna ne kattığını ölçer: kalan
+  aday, ortalama tahmin, ayırt edilemeyen çiftler, ve her alanın
+  **çıkarılırsa ne kaybedildiği**. Yeni alan tartışılacaksa önce bu.
 - `seo-check.mjs` — arama motoru hijyeni: her sayfanın kendi başlığı ve
   açıklaması (ve tekil olmaları, uzunluk sınırları), kanonik adresler,
   `?tur=`'un kanonikten düşmesi, robots↔harita tutarlılığı, JSON-LD'nin

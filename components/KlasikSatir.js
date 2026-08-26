@@ -25,7 +25,11 @@ const OK = { yukari: "▲", asagi: "▼" };
 
 /** Kapalı sözlükten gelen değerlerin Türkçesi tr.json'da. */
 function metin(alan, deger) {
-  if (alan === "brand" || alan === "country" || alan === "year") return String(deger);
+  // Sayisal kutular (yil, beygir) ciplak yaziliyor: birim basligin
+  // kendisinde. "152 PS" dar ekranda iki satira dusuyordu.
+  if (alan === "brand" || alan === "country" || alan === "year" || alan === "power") {
+    return String(deger);
+  }
   return t(`klasik.${alan}.${deger}`);
 }
 
@@ -54,10 +58,11 @@ export default function KlasikSatir({ tahmin, yeni = false, ornek = false }) {
         {tahmin.ad}
       </p>
 
-      <div className="grid grid-cols-6 gap-1">
+      <div className="grid grid-cols-7 gap-1">
         {ALANLAR.map((alan) => {
           const kutu = tahmin.sonuc[alan];
-          const ok = alan === "year" && kutu.yon ? OK[kutu.yon] : null;
+          // Ok tasiyan iki kutu var: yil ve beygir.
+          const ok = kutu.yon ? OK[kutu.yon] : null;
 
           return (
             <div
@@ -73,7 +78,15 @@ export default function KlasikSatir({ tahmin, yeni = false, ornek = false }) {
                 <span
                   className="text-xs leading-none sm:text-sm"
                   // Ok tek başına anlam taşıyor; ekran okuyucu da duysun.
-                  aria-label={t(kutu.yon === "yukari" ? "klasik.newer" : "klasik.older")}
+                  aria-label={t(
+                    alan === "power"
+                      ? kutu.yon === "yukari"
+                        ? "klasik.stronger"
+                        : "klasik.weaker"
+                      : kutu.yon === "yukari"
+                        ? "klasik.newer"
+                        : "klasik.older"
+                  )}
                   role="img"
                 >
                   {ok}
